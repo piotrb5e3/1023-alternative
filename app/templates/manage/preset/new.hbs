@@ -1,0 +1,69 @@
+<div>
+  {{name}}<br>
+  {{timeout_mode}}<br>
+  {{timeout_value}}<br>
+  {{feedback_mode}}<br>
+  {{repeats_count}}
+</div>
+<form {{action "formSubmit" on="submit" }}>
+  <div class="form-row">
+    {{md-input
+      value=name
+      label='Name'
+      type='text'
+      validate=true
+      errors=(if name errors.name (if errors.name invisibleErrors null))
+    }}
+  </div>
+  <div class="form-row">
+    {{md-select
+      content=timeoutOptions
+      value=timeout_mode
+      label="Timeout mode"
+      prompt="Please choose..."
+      optionLabelPath="content.name"
+      optionValuePath="content.id"
+      validate=true
+      errors=(if errors.timeout_mode invisibleErrors null)
+    }}
+  </div>
+  <div class="form-row">
+    {{md-input
+      value=timeout_value
+      label='Timeout value in ms'
+      type='number'
+      min=0
+      validate=true
+      errors=(if timeout_value errors.timeout_value (if errors.timeout_value invisibleErrors null))
+    }}
+  </div>
+  <div class="form-row">
+    {{md-select
+      content=feedbackOptions
+      value=feedback_mode
+      label="Feedback mode"
+      prompt="Please choose..."
+      optionLabelPath="name"
+      optionValuePath="id"
+      validate=true
+      errors=(if errors.feedback_mode invisibleErrors null)
+    }}
+  </div>
+  <div class="form-row">
+    {{md-input
+      value=repeats_count
+      label='Number of all 1023 alternatives repeats'
+      type='number'
+      min=0
+      validate=true
+      errors=(if repeats_count errors.repeats_count (if errors.repeats_count invisibleErrors null))
+    }}
+  </div>
+  <div class="form-row">
+
+    {{md-btn-submit icon='mdi-content-send'
+                    iconPosition='right'
+                    text='Submit'}}
+  </div>
+</form>
+{{outlet}}

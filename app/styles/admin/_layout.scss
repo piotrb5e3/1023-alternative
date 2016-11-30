@@ -1,0 +1,30 @@
+@import '../common';
+
+#logo-image {
+  height: 50px;
+  widht: 50px;
+}
+
+.admin-header {
+  margin-bottom: 20px;
+}
+
+#admin-middle {
+  @include container;
+}
+
+.admin-nav {
+  @include span(3);
+}
+
+.admin-body {
+  @include span(7);
+}
+
+.create-new-link {
+  text-align: right;
+}
+
+input {
+  mrgin-bottom: 40px;
+}

@@ -1,25 +1,25 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   var ENV = {
-    modulePrefix: 'frontend',
+    modulePrefix: 'alternatives',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
-      FEATURES: {
-        // Here you can enable experimental features on an ember canary build
-        // e.g. 'with-controller': true
-      }
+      FEATURES: {}
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      API_HOST: 'http://localhost:4200',
+      API_NAMESPACE: 'api'
     }
   };
 
   if (environment === 'development') {
+    ENV.APP.API_HOST = 'http://localhost:8000';
+    ENV.APP.API_NAMESPACE = 'api';
+
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

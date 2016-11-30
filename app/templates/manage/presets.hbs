@@ -1,0 +1,24 @@
+<div>Presets <span class="create-new-link">{{#link-to 'manage.preset.new'}}New{{/link-to}}</span></div>
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Timeout mode</th>
+      <th>Feedback mode</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{# each model as |preset| }}
+      <tr>
+        <td>{{#link-to 'manage.preset.show' preset}}{{preset.name}}{{/link-to}}</td>
+        <td>{{preset.timeout_mode}}</td>
+        <td>{{preset.feedback_mode}}</td>
+        <td>Delete, Create new with this one as blueprint</td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+</div>
+{{outlet}}
