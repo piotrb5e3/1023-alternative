@@ -1,27 +1,81 @@
-<div>
-  {{model.name}}<br>
-  {{model.status}}<br>
-  {{moment-calendar model.createdon}}<br>
-
-  Settings:<br>
-  {{model.settings.name}}<br>
-  {{model.settings.timeoutmode}}<br>
-  {{model.settings.timeoutvalue}}<br>
-  {{model.settings.feedbackmode}}<br>
-  {{model.settings.repeatscount}}<br>
-
-  {{#md-table content=model.sessions class="highlight" as |session|}}
-    {{#md-table-col row=session header="No"}}
-      {{#link-to 'manage.experiment.show.session.show' session}}
-        {{session.number}}
-      {{/link-to}}
-    {{/md-table-col}}
-    {{#md-table-col row=session header="Status"}}
-      {{session.status}}
-    {{/md-table-col}}
-    {{#md-table-col row=session header="Progress"}}
-      {{custom-progressbar progress=session.progress}}
-    {{/md-table-col}}
-  {{/md-table}}
-  {{outlet}}
+<h5>{{model.name}}</h5>
+<div class="row">
+  <div class="col s8">
+    {{#md-table content=model.sessions class="highlight" as |session|}}
+      {{#md-table-col row=session header="No"}}
+        {{#link-to 'manage.experiment.show.session.show' session}}
+          {{session.number}}
+        {{/link-to}}
+      {{/md-table-col}}
+      {{#md-table-col row=session header="Status"}}
+        {{session.status}}
+      {{/md-table-col}}
+      {{#md-table-col row=session header="Progress"}}
+        {{custom-progressbar progress=session.progress}}
+      {{/md-table-col}}
+    {{/md-table}}
+  </div>
+  <div class="col s4">
+    <table>
+      <thead>
+      <tr>
+        <th colspan="2">Experiment</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Status:</th>
+        <td>{{model.status}}</td>
+      </tr>
+      <tr>
+        <th>Created on:</th>
+        <td>{{moment-calendar model.createdon}}</td>
+      </tr>
+      {{#if model.startedon}}
+        <tr>
+          <th>Started on:</th>
+          <td>{{moment-calendar model.startedon}}</td>
+        </tr>
+      {{/if}}
+      {{#if model.finishedon}}
+        <tr>
+          <th>Started on:</th>
+          <td>{{moment-calendar model.finishedon}}</td>
+        </tr>
+      {{/if}}
+      </tbody>
+      <thead>
+      <tr>
+        <th colspan="2">Preset</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Name:</th>
+        <td>
+          {{#link-to 'manage.preset.show' model.settings}}
+            {{model.settings.name}}
+          {{/link-to}}
+        </td>
+      </tr>
+      <tr>
+        <th>Timeout mode:</th>
+        <td>{{model.settings.timeoutmode}}</td>
+      </tr>
+      <tr>
+        <th>Timeout delay:</th>
+        <td>{{model.settings.timeoutvalue}} ms</td>
+      </tr>
+      <tr>
+        <th>Feedback mode:</th>
+        <td>{{model.settings.feedbackmode}}</td>
+      </tr>
+      <tr>
+        <th>Repeats:</th>
+        <td>{{model.settings.repeatscount}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+{{outlet}}

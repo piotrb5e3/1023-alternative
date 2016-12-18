@@ -14,6 +14,8 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   settings: DS.belongsTo('experiment-preset'),
   createdon: DS.attr('date'),
+  startedon: DS.attr('date'),
+  finishedon: DS.attr('date'),
   status: DS.attr('string'),
   sessions: DS.hasMany('experiment-session'),
   progress: 0.0,
