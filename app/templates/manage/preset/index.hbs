@@ -1,4 +1,10 @@
-<div>Presets <span class="create-new-link">{{#link-to 'manage.preset.new'}}New{{/link-to}}</span></div>
+<h5>Presets
+  <small>
+    {{#link-to 'manage.preset.new'}}
+      New
+    {{/link-to}}
+  </small>
+</h5>
 <div>
   {{#md-table content=model class="highlight" as |preset|}}
     {{#md-table-col row=preset header="Name"}}
