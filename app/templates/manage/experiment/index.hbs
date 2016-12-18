@@ -8,41 +8,6 @@
       </small>
     </h5>
   </div>
-  <table class="highlight">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Preset</th>
-      <th>Status</th>
-      <th>Progress</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each model as |experiment|}}
-      <tr>
-        <td>
-          {{#link-to 'manage.experiment.show' experiment}}
-            {{experiment.name}}
-          {{/link-to}}
-        </td>
-        <td>
-          {{#link-to 'manage.preset.show' experiment.settings}}
-            {{experiment.settings.name}}
-          {{/link-to}}
-        </td>
-        <td>
-          {{experiment.status}}
-        </td>
-        <td>
-          {{custom-progressbar progress=experiment.progress}}
-        </td>
-      </tr>
-    {{else}}
-      <tr>
-        <td colspan="4">There are no experiments yet</td>
-      </tr>
-    {{/each}}
-    </tbody>
-  </table>
+  {{experiment-table experiments=model}}
   {{outlet}}
 </div>
