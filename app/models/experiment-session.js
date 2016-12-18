@@ -5,5 +5,7 @@ export default DS.Model.extend({
   status: DS.attr(),
   number: DS.attr(),
   progress: DS.attr(),
-  combinations: DS.hasMany('combination')
+  combinations: DS.hasMany('combination'),
+  startedon: DS.attr('date'),
+  finishedon: DS.attr('date')
 });

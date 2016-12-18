@@ -1,18 +1,61 @@
-<div>{{model.status}}
-
-{{#md-table content=model.combinations class="highlight" as |combination|}}
-  {{#md-table-col row=combination header="Lightset"}}
-    {{#link-to 'manage.experiment.show.session.show.combination.show' combination}}
-      {{combination.lightset}}
-    {{/link-to}}
-  {{/md-table-col}}
-  {{#md-table-col row=combination header="Status"}}
-    {{combination.status}}
-  {{/md-table-col}}
-  {{#md-table-col row=combination header="User"}}
-    Mike
-  {{/md-table-col}}
-{{/md-table}}
-
-{{outlet}}
+<h5>Session {{model.number}}</h5>
+<div class="row">
+  <div class="col s8">
+    <table>
+      <thead>
+      <tr>
+        <th>Lightset</th>
+        <th>Status</th>
+        <th>User</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each model.combinations as |combination|}}
+        <tr>
+          <td>
+            {{#link-to 'manage.experiment.show.session.show.combination.show' combination}}
+              {{combination.lightset}}
+            {{/link-to}}
+          </td>
+          <td>{{combination.status}}</td>
+          <td>Mike-Noone</td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="3">No data as of yet</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="col s4">
+    <table>
+      <thead>
+      <tr>
+        <th colspan="2">Session</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Status:</th>
+        <td>{{model.status}}</td>
+      </tr>
+      <tr>
+        <th>Progress:</th>
+        <td>{{custom-progressbar progress=model.progress}}</td>
+      </tr>
+      <tr>
+        <th>Started on:</th>
+        <td>{{moment-calendar model.startedon}}</td>
+      </tr>
+      {{#if model.finishedon}}
+        <tr>
+          <th>Finished on:</th>
+          <td>{{moment-calendar model.finishedon}}</td>
+        </tr>
+      {{/if}}
+      </tbody>
+    </table>
+  </div>
 </div>
+{{outlet}}
