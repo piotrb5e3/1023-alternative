@@ -15,7 +15,7 @@
           <td>{{#link-to 'manage.experiment.show.session.show' session}}
             {{session.number}}
           {{/link-to}}</td>
-          <td>{{session.status}}</td>
+          <td>{{session.status_str}}</td>
           <td>{{custom-progressbar progress=session.progress}}</td>
         </tr>
       {{else}}
@@ -36,7 +36,7 @@
       <tbody>
       <tr>
         <th>Status:</th>
-        <td>{{model.status}}</td>
+        <td>{{model.status_str}}</td>
       </tr>
       <tr>
         <th>Created on:</th>
@@ -71,7 +71,7 @@
       </tr>
       <tr>
         <th>Timeout mode:</th>
-        <td>{{model.settings.timeoutmode}}</td>
+        <td>{{model.settings.timeoutmode_str}}</td>
       </tr>
       <tr>
         <th>Timeout delay:</th>
@@ -79,7 +79,7 @@
       </tr>
       <tr>
         <th>Feedback mode:</th>
-        <td>{{model.settings.feedbackmode}}</td>
+        <td>{{model.settings.feedbackmode_str}}</td>
       </tr>
       <tr>
         <th>Repeats:</th>

@@ -10,14 +10,14 @@ export default DS.Model.extend({
   experiments: DS.hasMany('experiment'),
   timeoutmode_str: Ember.computed('timeoutmode', function () {
     return {
-      'fixed': 'Fixed',
-      'responsive': 'Responsive'
+      fixed: 'Fixed',
+      responsive: 'Responsive'
     }[this.get('timeoutmode')];
   }),
   feedbackmode_str: Ember.computed('feedbackmode', function () {
     return {
-      'none': 'None',
-      'n_audio': 'Audible beep on error'
+      none: 'None',
+      n_audio: 'Audible beep on error'
     }[this.get('feedbackmode')];
   })
 });
