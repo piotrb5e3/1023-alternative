@@ -5,7 +5,7 @@ export default Ember.Route.extend({
   model() {
     "use strict";
     return RSVP.hash({
-      experiment: this.get('store').findAll('experiment'),
+      experiment: this.get('store').findAll('experiment', {include: 'sessions,settings'}),
       preset: this.get('store').findAll('experiment-preset')
     });
   }

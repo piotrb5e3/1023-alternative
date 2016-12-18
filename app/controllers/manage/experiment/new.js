@@ -31,17 +31,22 @@ export default Ember.Controller.extend(EmberValidations, {
       let controller = this;
       this.validate().then(function success() {
         "use strict";
-        return controller.get('store').find('preset', controller.get('settingsId'));
+        return controller.get('store').find('experiment-preset', controller.get('settingsId'));
       }).then(function (settings) {
         let experiment = controller.get('store').createRecord('Experiment',
           {
             name: controller.get('name'),
-            settings: settings
+            settings: settings,
+            status: 'pending'
           });
+        controller.set('experiment', experiment);
         return experiment.save();
       }).then(function (experiment) {
+        controller.set('name', '');
+        controller.set('settingsId', null);
         return controller.transitionToRoute("manage.experiment.show", experiment);
       }).catch(function (error) {
+        controller.get('experiment').deleteRecord();
         alert(JSON.stringify(error));
       });
     }
