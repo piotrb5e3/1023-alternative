@@ -5,10 +5,10 @@ export default Ember.Controller.extend(EmberValidations, {
   breadCrumb: 'New',
   invisibleErrors: Ember.A([" "]),
   name: "",
-  timeout_mode: "",
-  timeout_value: "",
-  feedback_mode: "",
-  repeats_count: "",
+  timeoutmode: "",
+  timeoutvalue: "",
+  feedbackmode: "",
+  repeatscount: "",
   usedNamesObserver: Ember.observer('model', function () {
     "use strict";
     this.get('validations')['name'].exclusion.in = this.get('model').mapBy('name');
@@ -26,10 +26,10 @@ export default Ember.Controller.extend(EmberValidations, {
         maximum: 255
       }
     },
-    'timeout_mode': {
+    'timeoutmode': {
       presence: {message: "This field is required"},
     },
-    'timeout_value': {
+    'timeoutvalue': {
       presence: {
         message: "This field is required"
       },
@@ -38,10 +38,10 @@ export default Ember.Controller.extend(EmberValidations, {
         allowBlank: true
       }
     },
-    'feedback_mode': {
+    'feedbackmode': {
       presence: {message: "This field is required"},
     },
-    'repeats_count': {
+    'repeatscount': {
       presence: {
         message: ""
       },
@@ -53,10 +53,10 @@ export default Ember.Controller.extend(EmberValidations, {
   },
   errors: {
     name: Ember.A(),
-    timeout_mode: Ember.A(),
-    timeout_value: Ember.A(),
-    feedback_mode: Ember.A(),
-    repeats_count: Ember.A(),
+    timeoutmode: Ember.A(),
+    timeoutvalue: Ember.A(),
+    feedbackmode: Ember.A(),
+    repeatscount: Ember.A(),
   },
   timeoutOptions: Ember.A([
     {id: 'fixed', name: 'X ms after lamps ale lit up'},
@@ -71,13 +71,13 @@ export default Ember.Controller.extend(EmberValidations, {
       let controller = this;
       this.validate().then(function () {
         "use strict";
-        let preset = controller.get('store').createRecord('experiment-preset.js',
+        let preset = controller.get('store').createRecord('experiment-preset',
           {
             name: controller.get('name'),
-            timeout_mode: controller.get('timeout_mode'),
-            timeout_value: controller.get('timeout_value'),
-            feedback_mode: controller.get('feedback_mode'),
-            repeats_count: controller.get('repeats_count'),
+            timeoutmode: controller.get('timeoutmode'),
+            timeoutvalue: controller.get('timeoutvalue'),
+            feedbackmode: controller.get('feedbackmode'),
+            repeatscount: controller.get('repeatscount'),
           });
         preset.save()
           .then(function () {

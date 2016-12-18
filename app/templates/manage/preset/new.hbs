@@ -1,10 +1,4 @@
-<div>
-  {{name}}<br>
-  {{timeoutmode}}<br>
-  {{timeoutvalue}}<br>
-  {{feedbackmode}}<br>
-  {{repeatscount}}
-</div>
+<h5>New preset</h5>
 <form {{action "formSubmit" on="submit" }}>
   <div class="form-row">
     {{md-input
@@ -24,7 +18,7 @@
       optionLabelPath="content.name"
       optionValuePath="content.id"
       validate=true
-      errors=(if errors.timeout_mode invisibleErrors null)
+      errors=(if errors.timeoutmode invisibleErrors null)
     }}
   </div>
   <div class="form-row">
@@ -34,7 +28,7 @@
       type='number'
       min=0
       validate=true
-      errors=(if timeout_value errors.timeout_value (if errors.timeout_value invisibleErrors null))
+      errors=(if timeoutvalue errors.timeout_value (if errors.timeoutvalue invisibleErrors null))
     }}
   </div>
   <div class="form-row">
@@ -46,7 +40,7 @@
       optionLabelPath="name"
       optionValuePath="id"
       validate=true
-      errors=(if errors.feedback_mode invisibleErrors null)
+      errors=(if errors.feedbackmode invisibleErrors null)
     }}
   </div>
   <div class="form-row">
@@ -56,7 +50,7 @@
       type='number'
       min=0
       validate=true
-      errors=(if repeats_count errors.repeats_count (if errors.repeats_count invisibleErrors null))
+      errors=(if repeats_count errors.repeatscount (if errors.repeatscount invisibleErrors null))
     }}
   </div>
   <div class="form-row">
