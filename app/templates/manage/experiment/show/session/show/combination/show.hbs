@@ -1,9 +1,38 @@
-{{#md-table content=model.events class="highlight" as |event|}}
-  {{#md-table-col row=event header="Type"}}
-    {{event.eventtype_str}}
-  {{/md-table-col}}
-  {{#md-table-col row=event header="Time"}}
-    {{event.time}}
-  {{/md-table-col}}
-{{/md-table}}
+<h5>Lightset {{model.lightset}}</h5>
+<div class="row">
+  <div class="col s8">
+    {{#md-table content=model.events class="highlight" as |event|}}
+      {{#md-table-col row=event header="Type"}}
+        {{event.eventtype_str}}
+      {{/md-table-col}}
+      {{#md-table-col row=event header="Time"}}
+        {{moment-format event.time 'DD.MM.YYYY HH:mm:ss'}}
+      {{/md-table-col}}
+    {{/md-table}}
+  </div>
+  <div class="col s4">
+    <table>
+      <thead>
+      <tr>
+        <th colspan="2">Lightset</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Lamps:</th>
+        <td>{{lightset-display lightset=model.lightset}}</td>
+      </tr>
+      <tr>
+        <th>Status:</th>
+        <td>{{model.status_str}}</td>
+      </tr>
+      <tr>
+        <th>User:</th>
+        <td>{{model.user}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {{outlet}}
