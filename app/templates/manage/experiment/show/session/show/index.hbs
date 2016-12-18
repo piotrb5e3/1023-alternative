@@ -4,7 +4,7 @@
     <table>
       <thead>
       <tr>
-        <th>Lightset</th>
+        <th colspan="2">Lightset</th>
         <th>Status</th>
         <th>User</th>
       </tr>
@@ -16,6 +16,9 @@
             {{#link-to 'manage.experiment.show.session.show.combination.show' combination}}
               {{combination.lightset}}
             {{/link-to}}
+          </td>
+          <td>
+            {{lightset-display lightset=combination.lightset}}
           </td>
           <td>{{combination.status_str}}</td>
           <td>Mike-Noone</td>

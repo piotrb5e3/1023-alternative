@@ -1,0 +1,14 @@
+@import '../common';
+
+.cell-inactive {
+  font-size: 15px !important;
+  line-height: 22.5px !important;
+  color: $lightset-display-inactive-color;
+}
+
+.cell-active {
+  font-size: 15px !important;
+  line-height: 22.5px !important;
+  color: $lightset-display-active-color;
+}
+

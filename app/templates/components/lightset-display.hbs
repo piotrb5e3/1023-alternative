@@ -1,0 +1,6 @@
+{{#each cells as |cell|}}
+  <i class="material-icons {{if cell 'cell-active' 'cell-inactive'}}">
+    {{if cell 'visibility' 'visibility_off'}}
+  </i>
+{{/each}}
+{{yield}}
