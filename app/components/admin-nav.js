@@ -1,5 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ["admin-nav"]
+  links: Ember.A([
+    {
+      name: 'Presets',
+      link: 'manage.preset'
+    },
+    {
+      name: 'Experiments',
+      link: 'manage.experiment'
+    }
+  ])
 });

@@ -1,23 +1,23 @@
 import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 
-//let errorMsg = {
-//  fieldRequired: 'This field is required',
-//  nonNegativeRequired: 'Expected a non-negative integer'
-//};
-
 export default Ember.Controller.extend(EmberValidations, {
+  breadCrumb: 'New',
   invisibleErrors: Ember.A([" "]),
   name: "",
   timeout_mode: "",
   timeout_value: "",
   feedback_mode: "",
   repeats_count: "",
+  usedNamesObserver: Ember.observer('model', function () {
+    "use strict";
+    this.get('validations')['name'].exclusion.in = this.get('model').mapBy('name');
+  }),
   validations: {
     'name': {
       exclusion: {
         allowBlank: true,
-        in: ['name_taken']
+        in: []
       },
       presence: {
         message: "This field is required"
@@ -71,7 +71,7 @@ export default Ember.Controller.extend(EmberValidations, {
       let controller = this;
       this.validate().then(function () {
         "use strict";
-        let preset = controller.get('store').createRecord('preset',
+        let preset = controller.get('store').createRecord('experiment-preset.js',
           {
             name: controller.get('name'),
             timeout_mode: controller.get('timeout_mode'),
@@ -79,8 +79,8 @@ export default Ember.Controller.extend(EmberValidations, {
             feedback_mode: controller.get('feedback_mode'),
             repeats_count: controller.get('repeats_count'),
           });
-          preset.save()
-          .then(function() {
+        preset.save()
+          .then(function () {
             controller.transitionToRoute("manage.preset.show", preset);
           })
           .catch(function (error) {

@@ -1,0 +1,24 @@
+<div>
+  {{model.name}}<br>
+  {{model.status}}<br>
+  {{moment-calendar model.createdon}}<br>
+
+  Settings:<br>
+  {{model.settings.name}}<br>
+  {{model.settings.timeoutmode}}<br>
+  {{model.settings.timeoutvalue}}<br>
+  {{model.settings.feedbackmode}}<br>
+  {{model.settings.repeatscount}}<br>
+
+  {{#md-table content=model.sessions class="highlight" as |session|}}
+    {{#md-table-col row=session header="No"}}
+      {{#link-to 'manage.experiment.show.session.show' session}}
+        0
+      {{/link-to}}
+    {{/md-table-col}}
+    {{#md-table-col row=session header="Status"}}
+      {{session.status}}
+    {{/md-table-col}}
+  {{/md-table}}
+  {{outlet}}
+</div>

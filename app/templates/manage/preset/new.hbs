@@ -1,9 +1,9 @@
 <div>
   {{name}}<br>
-  {{timeout_mode}}<br>
-  {{timeout_value}}<br>
-  {{feedback_mode}}<br>
-  {{repeats_count}}
+  {{timeoutmode}}<br>
+  {{timeoutvalue}}<br>
+  {{feedbackmode}}<br>
+  {{repeatscount}}
 </div>
 <form {{action "formSubmit" on="submit" }}>
   <div class="form-row">
@@ -18,7 +18,7 @@
   <div class="form-row">
     {{md-select
       content=timeoutOptions
-      value=timeout_mode
+      value=timeoutmode
       label="Timeout mode"
       prompt="Please choose..."
       optionLabelPath="content.name"
@@ -29,7 +29,7 @@
   </div>
   <div class="form-row">
     {{md-input
-      value=timeout_value
+      value=timeoutvalue
       label='Timeout value in ms'
       type='number'
       min=0
@@ -40,7 +40,7 @@
   <div class="form-row">
     {{md-select
       content=feedbackOptions
-      value=feedback_mode
+      value=feedbackmode
       label="Feedback mode"
       prompt="Please choose..."
       optionLabelPath="name"
@@ -51,7 +51,7 @@
   </div>
   <div class="form-row">
     {{md-input
-      value=repeats_count
+      value=repeatscount
       label='Number of all 1023 alternatives repeats'
       type='number'
       min=0
@@ -60,7 +60,6 @@
     }}
   </div>
   <div class="form-row">
-
     {{md-btn-submit icon='mdi-content-send'
                     iconPosition='right'
                     text='Submit'}}

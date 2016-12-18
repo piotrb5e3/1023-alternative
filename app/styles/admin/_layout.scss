@@ -1,24 +1,11 @@
 @import '../common';
 
-#logo-image {
-  height: 50px;
-  widht: 50px;
+#admin-body {
+  margin: 0.5rem 0 1rem 0;
 }
 
-.admin-header {
-  margin-bottom: 20px;
-}
-
-#admin-middle {
-  @include container;
-}
-
-.admin-nav {
-  @include span(3);
-}
-
-.admin-body {
-  @include span(7);
+#breadcrumbs-wrapper {
+  line-height: 48px;
 }
 
 .create-new-link {
@@ -26,5 +13,18 @@
 }
 
 input {
-  mrgin-bottom: 40px;
+  margin-bottom: 40px;
 }
+
+.navbar-container {
+  @include container;
+
+  .logo {
+    @include span(3);
+  }
+
+  .breadcrumbs {
+    @include span(8);
+  }
+}
+

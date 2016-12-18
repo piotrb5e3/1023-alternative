@@ -1,0 +1,21 @@
+@import 'common';
+
+.pb-component {
+  @include container;
+}
+
+.pb-container {
+  @include span(10);
+  height: 22px;
+}
+
+.pb-bar {
+  margin-top: 5px;
+  height: 50%;
+  background-color: #8bc34a;
+}
+
+.pb-text {
+  @include span(1);
+}
+

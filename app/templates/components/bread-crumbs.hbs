@@ -1,0 +1,17 @@
+<div id="breadcrumbs-wrapper" class="col s12">
+  {{#each breadCrumbs as |bc|}}
+    {{#if bc.isCurrent}}
+      <span class="breadcrumb">{{bc.label}}</span>
+    {{else}}
+      {{#if bc.model}}
+        {{#link-to bc.path bc.model class="breadcrumb"}}
+          {{bc.label}}
+        {{/link-to}}
+      {{else}}
+        {{#link-to bc.path class="breadcrumb"}}
+          {{bc.label}}
+        {{/link-to}}
+      {{/if}}
+    {{/if}}
+  {{/each}}
+</div>

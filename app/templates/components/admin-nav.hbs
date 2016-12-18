@@ -1,4 +1,6 @@
-<ul id="admin-nav-list">
-  {{admin-nav-item link='manage.presets' name='presets'}}
-</ul>
+{{#md-collection content=links as |navlink|}}
+  {{#link-to navlink.link class="collection-item"}}
+    {{navlink.name}}
+  {{/link-to}}
+{{/md-collection}}
 {{yield}}

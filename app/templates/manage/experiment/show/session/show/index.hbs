@@ -1,0 +1,18 @@
+<div>{{model.status}}
+
+{{#md-table content=model.combinations class="highlight" as |combination|}}
+  {{#md-table-col row=combination header="Lightset"}}
+    {{#link-to 'manage.experiment.show.session.show.combination.show' combination}}
+      {{combination.lightset}}
+    {{/link-to}}
+  {{/md-table-col}}
+  {{#md-table-col row=combination header="Status"}}
+    0
+  {{/md-table-col}}
+  {{#md-table-col row=combination header="User"}}
+    Mike
+  {{/md-table-col}}
+{{/md-table}}
+
+{{outlet}}
+</div>

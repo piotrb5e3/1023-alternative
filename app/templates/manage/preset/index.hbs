@@ -1,0 +1,18 @@
+<div>Presets <span class="create-new-link">{{#link-to 'manage.preset.new'}}New{{/link-to}}</span></div>
+<div>
+  {{#md-table content=model class="highlight" as |preset|}}
+    {{#md-table-col row=preset header="Name"}}
+      {{#link-to 'manage.preset.show' preset}}{{preset.name}}{{/link-to}}
+    {{/md-table-col}}
+    {{#md-table-col row=preset valueBindingPath='timeoutmode_str' header="Timeout mode"}}
+      {{preset.timeoutmode_str}}
+    {{/md-table-col}}
+    {{#md-table-col row=preset valueBindingPath='feedbackmode_str' header="Feedback mode"}}
+      {{preset.feedbackmode_str}}
+    {{/md-table-col}}
+    {{#md-table-col row=preset header="Actions"}}
+      Delete, Create new with this one as blueprint
+    {{/md-table-col}}
+  {{/md-table}}
+</div>
+{{outlet}}

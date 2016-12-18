@@ -1,4 +1,6 @@
-import DRFAdapter from './drf';
+import DS from 'ember-data';
 
-export default DRFAdapter.extend({
+export default DS.JSONAPIAdapter.extend({
+  host: 'http://localhost:8000',
+  namespace: 'api'
 });

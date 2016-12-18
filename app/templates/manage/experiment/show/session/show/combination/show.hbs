@@ -1,0 +1,9 @@
+{{#md-table content=model.events class="highlight" as |event|}}
+  {{#md-table-col row=event header="Type"}}
+    {{event.eventtype}}
+  {{/md-table-col}}
+  {{#md-table-col row=event header="Time"}}
+    {{event.time}}
+  {{/md-table-col}}
+{{/md-table}}
+{{outlet}}

@@ -1,0 +1,22 @@
+<div>
+  Experiments {{#link-to 'manage.experiment.new'}}New{{/link-to}}
+  {{#md-table content=model class="highlight" as |experiment|}}
+    {{#md-table-col row=experiment header="Name"}}
+      {{#link-to 'manage.experiment.show' experiment}}
+        {{experiment.name}}
+      {{/link-to}}
+    {{/md-table-col}}
+    {{#md-table-col row=experiment header="Preset"}}
+      {{#link-to 'manage.preset.show' experiment.settings}}
+        {{experiment.settings.name}}
+      {{/link-to}}
+    {{/md-table-col}}
+    {{#md-table-col row=experiment header="Created on"}}
+      {{moment-calendar experiment.createdon}}
+    {{/md-table-col}}
+    {{#md-table-col row=experiment header="Progress"}}
+      {{custom-progressbar progress=experiment.progress}}
+    {{/md-table-col}}
+  {{/md-table}}
+  {{outlet}}
+</div>

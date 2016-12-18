@@ -1,0 +1,33 @@
+<div>
+  {{name}}<br>
+  {{settingsId}}<br>
+</div>
+<form {{action "formSubmit" on="submit"}}>
+  <div class="form-row">
+    {{md-input
+      value=name
+      label='Name'
+      type='text'
+      validate=true
+      errors=(if name errors.name (if errors.name invisibleErrors null))
+    }}
+  </div>
+  <div class="form-row">
+    {{md-select
+      content=settingsOptions
+      value=settingsId
+      label="Experiment preset"
+      prompt="Please choose..."
+      optionLabelPath="content.name"
+      optionValuePath="content.id"
+      validate=true
+      errors=(if errors.settingsId invisibleErrors null)
+    }}
+  </div>
+  <div class="form-row">
+    {{md-btn-submit icon='mdi-content-send'
+                    iconPosition='right'
+                    text='Submit'}}
+  </div>
+</form>
+{{outlet}}
