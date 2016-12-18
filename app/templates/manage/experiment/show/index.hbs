@@ -13,11 +13,14 @@
   {{#md-table content=model.sessions class="highlight" as |session|}}
     {{#md-table-col row=session header="No"}}
       {{#link-to 'manage.experiment.show.session.show' session}}
-        0
+        {{session.number}}
       {{/link-to}}
     {{/md-table-col}}
     {{#md-table-col row=session header="Status"}}
       {{session.status}}
+    {{/md-table-col}}
+    {{#md-table-col row=session header="Progress"}}
+      {{custom-progressbar progress=session.progress}}
     {{/md-table-col}}
   {{/md-table}}
   {{outlet}}
