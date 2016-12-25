@@ -1,0 +1,55 @@
+<div class="col s9">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Sessions</span>
+      <table class="highlight">
+        <thead>
+        <tr>
+          <th>Subject Id</th>
+          <th>Subject name</th>
+          <th>Started on</th>
+          <th>Status</th>
+          <th>Progress</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each model.sessions as |session|}}
+          <tr>
+            <td>{{session.userid}}</td>
+            <td>{{session.username}}</td>
+            <td>{{moment-calendar session.startedon}}</td>
+            <td>{{session.status_str}}</td>
+            <td>{{custom-progressbar progress=session.progress}}</td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="5">
+              No sessions have been started yet
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="col s3">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Settings</span>
+      <dl>
+        <dt>Name:</dt>
+        <dd>{{model.name}}</dd>
+        <dt>Light-off mode:</dt>
+        <dd>{{model.lightoffmode_str}}</dd>
+        <dt>Light-off timeout:</dt>
+        <dd>{{model.lightofftimeout}} ms</dd>
+        <dt>Audio mode:</dt>
+        <dd>{{model.audiomode_str}}</dd>
+        <dt>Repeats:</dt>
+        <dd>{{model.repeatscount}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+{{outlet}}

@@ -7,7 +7,13 @@ export default DS.Model.extend({
   lightofftimeout: DS.attr('number'),
   audiomode: DS.attr('string'),
   repeatscount: DS.attr('number'),
-  sessions: DS.hasMany('experiment-session'),
+  sessions: DS.hasMany('experiment-session', {async: 'false'}),
+  sessions_count: Ember.computed('sessions.[]', function () {
+    return this.get('sessions').toArray().length;
+  }),
+  sessions_fin_count: Ember.computed('sessions.@each.status', function () {
+    return this.get('sessions').filterBy('status', 'F').length;
+  }),
   lightoffmode_str: Ember.computed('lightoffmode', function () {
     return {
       fixed: 'Fixed',

@@ -1,30 +1,73 @@
-<h5>New experiment</h5>
-<form {{action "formSubmit" on="submit"}}>
-  <div class="form-row">
-    {{md-input
-      value=name
-      label='Name'
-      type='text'
-      validate=true
-      errors=(if name errors.name (if errors.name invisibleErrors null))
-    }}
+<div class="col s12">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <form {{action "formSubmit" on="submit" }}>
+
+        <div class="form-row">
+          {{md-input
+            value=name
+            label='Name'
+            type='text'
+            validate=true
+            errors=(if name errors.name (if errors.name invisibleErrors null))
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-select
+            content=lightoffOptions
+            value=lightoffmode
+            label="Light-off mode"
+            prompt="Please choose..."
+            optionLabelPath="content.name"
+            optionValuePath="content.id"
+            validate=true
+            errors=(if errors.lightoffmode invisibleErrors null)
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-input
+            value=lightofftimeout
+            label='Timeout value in ms'
+            type='number'
+            min=0
+            validate=true
+            errors=(if lightofftimeout errors.lightofftimeout (if errors.lightofftimeout invisibleErrors null))
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-select
+            content=audioOptions
+            value=audiomode
+            label="Audio mode"
+            prompt="Please choose..."
+            optionLabelPath="name"
+            optionValuePath="id"
+            validate=true
+            errors=(if errors.audiomode invisibleErrors null)
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-input
+            value=repeatscount
+            label='Number of all 1023 alternatives repeats'
+            type='number'
+            min=0
+            validate=true
+            errors=(if repeatscount errors.repeatscount (if errors.repeatscount invisibleErrors null))
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-btn-submit icon='mdi-content-send'
+                          iconPosition='right'
+                          text='Submit'}}
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="form-row">
-    {{md-select
-      content=settingsOptions
-      value=settingsId
-      label="Experiment preset"
-      prompt="Please choose..."
-      optionLabelPath="content.name"
-      optionValuePath="content.id"
-      validate=true
-      errors=(if errors.settingsId invisibleErrors null)
-    }}
-  </div>
-  <div class="form-row">
-    {{md-btn-submit icon='mdi-content-send'
-                    iconPosition='right'
-                    text='Submit'}}
-  </div>
-</form>
+</div>
 {{outlet}}

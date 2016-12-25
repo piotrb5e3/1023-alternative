@@ -1,2 +1,14 @@
-Welcome to the <i>𝛹 Alternatives</i> admin panel!
+<div class="col s12">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Experiments
+      <small>
+        {{#link-to 'manage.experiment.new'}}
+          New
+        {{/link-to}}
+      </small></span>
+      {{experiment-table experiments=model}}
+    </div>
+  </div>
+</div>
 {{outlet}}

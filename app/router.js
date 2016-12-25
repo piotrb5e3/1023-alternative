@@ -10,7 +10,7 @@ Router.map(function () {
   this.route('manage', function () {
     this.route('experiment', {path: '/experiment'}, function () {
       this.route('new', {path: '/new'});
-      this.route('show', {path: '/:experiment_id'});
+      this.route('show', {path: '/:experiment_id'}, function() {});
     });
   });
 });

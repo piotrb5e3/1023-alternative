@@ -2,9 +2,8 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>Preset</th>
-    <th>Status</th>
-    <th>Progress</th>
+    <th>Sessions</th>
+    <th>Finished sessions</th>
   </tr>
   </thead>
   <tbody>
@@ -16,15 +15,10 @@
         {{/link-to}}
       </td>
       <td>
-        {{#link-to 'manage.preset.show' experiment.settings}}
-          {{experiment.settings.name}}
-        {{/link-to}}
+        {{experiment.sessions_count}}
       </td>
       <td>
-        {{experiment.status_str}}
-      </td>
-      <td>
-        {{custom-progressbar progress=experiment.progress}}
+        {{experiment.sessions_fin_count}}
       </td>
     </tr>
   {{else}}
