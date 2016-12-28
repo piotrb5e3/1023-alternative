@@ -1,0 +1,14 @@
+<div id="experiment-base">
+  <div class="valign-wrapper">
+    <div class="valign">
+      <table>
+        <tr>
+          {{#each-in lights as |light-no light|}}
+            {{experiment-lamp light=light}}
+          {{/each-in}}
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+{{yield}}

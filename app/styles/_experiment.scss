@@ -1,0 +1,31 @@
+@import 'common';
+
+body {
+  background-color: $experiment-background;
+}
+
+#experiment-base {
+  width: 1024px;
+  margin: auto;
+
+  .valign-wrapper {
+    height: 600px;
+  }
+
+  table {
+    width: 1024px;
+  }
+}
+
+.lamp {
+  height: 50px;
+  width: 50px;
+}
+
+.lamp-off {
+  background-color: $lamp-inactive-color;
+}
+
+.lamp-on {
+  background-color: $lamp-active-color;
+}
