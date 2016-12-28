@@ -40,5 +40,18 @@ export default Ember.Service.extend({
     "use strict";
     this.playBeep();
   },
-
+  initExperiment(userid, userpass) {
+    "use strict";
+    let overseer = this;
+    return this.get('experimentGateway').retrieveSettings(userid, userpass)
+      .then(function (settings) {
+        alert(JSON.stringify(settings));
+        overseer.set('settings', settings);
+        overseer.getNextLightset();
+      });
+  },
+  getNextLightset() {
+    "use strict";
+    alert('Looking for the next lightset!');
+  }
 });

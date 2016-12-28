@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  ajax: Ember.inject.service(),
   reportPress(keycode) {
     "use strict";
     alert('Not yet implemented!');
@@ -13,8 +14,14 @@ export default Ember.Service.extend({
     "use strict";
     alert('Not yet implemented!');
   },
-  retrieveSettings() {
+  retrieveSettings(userid, userpass) {
     "use strict";
-    alert('Not yet implemented!');
+    return this.get('ajax').request('extra/get-experiment', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass
+      }
+    });
   },
 });

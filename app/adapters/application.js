@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import ENV from 'frontend/config/environment';
 
 export default DS.JSONAPIAdapter.extend({
-  host: 'http://localhost:8000',
-  namespace: 'api'
+  host: ENV.APP.host,
+  namespace: ENV.APP.namespace
 });
