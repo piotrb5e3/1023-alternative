@@ -5,6 +5,8 @@ import {MusicalIdentity} from 'ember-audio/mixins';
 const Beeper = Oscillator.extend(MusicalIdentity);
 
 export default Ember.Service.extend({
+  userid: null,
+  userpass: null,
   audio: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
   oscillator: Ember.computed('audio', function () {
@@ -42,16 +44,34 @@ export default Ember.Service.extend({
   },
   initExperiment(userid, userpass) {
     "use strict";
+    this.set('userid', userid);
+    this.set('userpass', userpass);
     let overseer = this;
     return this.get('experimentGateway').retrieveSettings(userid, userpass)
       .then(function (settings) {
-        alert(JSON.stringify(settings));
+        //alert(JSON.stringify(settings));
         overseer.set('settings', settings);
-        overseer.getNextLightset();
+        let f = function () {
+          Ember.run(overseer.getNextLightset());
+        };
+        overseer.pauseCurrentLightset().then(f, f);
       });
   },
   getNextLightset() {
     "use strict";
-    alert('Looking for the next lightset!');
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+    let overseer = this;
+    return this.get('experimentGateway').retrieveLightset(userid, userpass).then(function (lightset) {
+      overseer.set('lightset', lightset);
+    }).catch(function (err) {
+      alert(JSON.stringify(err));
+    });
+  },
+  pauseCurrentLightset() {
+    "use strict";
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+    return this.get('experimentGateway').reportPause(userid, userpass);
   }
 });
