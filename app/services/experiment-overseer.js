@@ -7,6 +7,7 @@ const Beeper = Oscillator.extend(MusicalIdentity);
 export default Ember.Service.extend({
   userid: null,
   userpass: null,
+  controller: null,
   audio: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
   oscillator: Ember.computed('audio', function () {
@@ -40,38 +41,51 @@ export default Ember.Service.extend({
   },
   handleKeyPress(keyCode) {
     "use strict";
-    this.playBeep();
+    switch (keyCode) {
+      case 'Escape':
+        this.pauseButtonPressed();
+        break;
+      default:
+        this.playBeep();
+        break;
+    }
   },
-  initExperiment(userid, userpass) {
+  initExperiment(controller, userid, userpass) {
     "use strict";
     this.set('userid', userid);
     this.set('userpass', userpass);
-    let overseer = this;
+    this.set('controller', controller);
     return this.get('experimentGateway').retrieveSettings(userid, userpass)
       .then(function (settings) {
-        //alert(JSON.stringify(settings));
-        overseer.set('settings', settings);
-        let f = function () {
-          Ember.run(overseer.getNextLightset());
-        };
-        overseer.pauseCurrentLightset().then(f, f);
-      });
+        this.set('settings', settings);
+        this.pauseCurrentLightset().then(this.getNextLightset.bind(this), this.getNextLightset.bind(this));
+      }.bind(this));
   },
   getNextLightset() {
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    let overseer = this;
     return this.get('experimentGateway').retrieveLightset(userid, userpass).then(function (lightset) {
-      overseer.set('lightset', lightset);
-    }).catch(function (err) {
-      alert(JSON.stringify(err));
-    });
+      this.set('lightset', lightset);
+    }.bind(this)).catch(this.reportError.bind(this));
   },
   pauseCurrentLightset() {
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    return this.get('experimentGateway').reportPause(userid, userpass);
+    return this.get('experimentGateway').reportPause(userid, userpass)
+      .catch(this.reportError.bind(this));
+  },
+  reportError(err) {
+    "use strict";
+    console.log(JSON.stringify(err));
+  },
+  pauseButtonPressed() {
+    "use strict";
+    this.pauseCurrentLightset().then(this.redirectToPausePage.bind(this));
+  },
+  redirectToPausePage() {
+    "use strict";
+    this.get('controller').transitionToRoute('experiment.pause');
   }
 });

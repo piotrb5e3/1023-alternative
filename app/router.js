@@ -13,7 +13,9 @@ Router.map(function () {
       this.route('show', {path: '/:experiment_id'}, function() {});
     });
   });
-  this.route('experiment');
+  this.route('experiment', function() {
+    this.route('pause');
+  });
 });
 
 export default Router;
