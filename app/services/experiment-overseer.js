@@ -101,5 +101,15 @@ export default Ember.Service.extend({
     return this.get('experimentGateway').reportFinish(userid, userpass)
       .then(() => Ember.run.later(this.getNextLightset(), 500))
       .catch(this.reportError.bind(this));
+  },
+  reportUserData(data) {
+    "use strict";
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+    return this.get('experimentGateway').reportUserData(userid, userpass, data);
+  },
+  shouldAskForData(){
+    "use strict";
+    return this.get('settings.askUserData');
   }
 });

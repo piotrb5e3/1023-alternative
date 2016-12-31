@@ -1,1 +1,32 @@
+<div id="login-card" class="card">
+  <form {{action "formSubmit" on="submit" }}>
+    <div class="card-content">
+      <span class="card-title">Authorization</span>
+      <div class="form-row">
+        {{md-input
+          value=userid
+          label='User id'
+          type='text'
+          validate=true
+          errors=(if userid errors.username (if errors.userid invisibleErrors null))
+        }}
+      </div>
+      <div class="form-row">
+        {{md-input
+          value=userpass
+          label='Password'
+          type='password'
+          validate=true
+          errors=(if userpass errors.userpass (if errors.userpass invisibleErrors null))
+        }}
+      </div>
+    </div>
+    <div class="card-action">
+      {{md-btn-submit icon='mdi-content-send'
+                      iconPosition='right'
+                      text='Log in'}}
+    </div>
+  </form>
+</div>
+
 {{outlet}}

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 
 export default Ember.Controller.extend(EmberValidations, {
+  experimentOverseer: Ember.inject.service(),
   invisibleErrors: Ember.A([" "]),
   usersexOptions: Ember.A([
     {id: 'F', name: 'Female'},
@@ -36,7 +37,17 @@ export default Ember.Controller.extend(EmberValidations, {
   actions: {
     formSubmit: function () {
       this.validate().then(() => {
-        alert("Got it!");
+        this.get('experimentOverseer').reportUserData({
+          username: this.get('username'),
+          usersex: this.get('usersex'),
+          userage: this.get('userage')
+        }).then(() => {
+          "use strict";
+          this.set('username', null);
+          this.set('usersex', null);
+          this.set('userage', null);
+          this.transitionToRoute('experiment');
+        }).catch((err) => alert(JSON.stringify(err)));
       });
     }
   }

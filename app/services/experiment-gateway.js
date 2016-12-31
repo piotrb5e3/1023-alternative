@@ -6,9 +6,19 @@ export default Ember.Service.extend({
     "use strict";
     alert('Not yet implemented!');
   },
-  reportUserData(data) {
+  reportUserData(userid, userpass, {username, usersex, userage}) {
     "use strict";
-    alert('Not yet implemented!');
+    return this.get('ajax').request('extra/report-data', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass,
+        username: username,
+        usersex: usersex,
+        userage: userage,
+
+      }
+    });
   },
   reportPause(userid, userpass) {
     "use strict";
