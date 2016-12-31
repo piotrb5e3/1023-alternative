@@ -40,4 +40,24 @@ export default Ember.Service.extend({
       }
     });
   },
+  reportBegin(userid, userpass) {
+    "use strict";
+    return this.get('ajax').request('extra/eventbegin', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass
+      }
+    });
+  },
+  reportFinish(userid, userpass) {
+    "use strict";
+    return this.get('ajax').request('extra/eventfinish', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass
+      }
+    });
+  }
 });

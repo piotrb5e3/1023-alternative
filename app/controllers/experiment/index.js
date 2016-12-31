@@ -9,7 +9,7 @@ export default Ember.Controller.extend(EKMixin, {
     this.get('experimentOverseer').handleKeyPress(getCode(event));
   }),
   setupExperiment: Ember.on('init', function () {
-    this.get('experimentOverseer').initExperiment(this, '3cibdy7q', 'hghghgh').catch(function (err) {
+    this.get('experimentOverseer').initExperiment(this, 'user', 'useruser').catch(function (err) {
       "use strict";
       alert(JSON.stringify(err));
     });

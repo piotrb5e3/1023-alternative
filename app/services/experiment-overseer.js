@@ -34,9 +34,8 @@ export default Ember.Service.extend({
   }),
   playBeep () {
     "use strict";
-    let controller = this;
-    Ember.run.later(function () {
-      controller.get('oscillator').playFor(0.1);
+    Ember.run.later(() => {
+      this.get('oscillator').playFor(0.1);
     }, 200);
   },
   handleKeyPress(keyCode) {
@@ -44,6 +43,9 @@ export default Ember.Service.extend({
     switch (keyCode) {
       case 'Escape':
         this.pauseButtonPressed();
+        break;
+      case 'KeyQ':
+        this.goToNextLightset();
         break;
       default:
         this.playBeep();
@@ -65,9 +67,12 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    return this.get('experimentGateway').retrieveLightset(userid, userpass).then(function (lightset) {
-      this.set('lightset', lightset);
-    }.bind(this)).catch(this.reportError.bind(this));
+    return this.get('experimentGateway').retrieveLightset(userid, userpass).then(
+      (lightset) => {
+        this.set('lightset', lightset);
+      }).then(
+      () => this.get('experimentGateway').reportBegin(userid, userpass)
+    ).catch((err) => this.reportError(err));
   },
   pauseCurrentLightset() {
     "use strict";
@@ -87,5 +92,14 @@ export default Ember.Service.extend({
   redirectToPausePage() {
     "use strict";
     this.get('controller').transitionToRoute('experiment.pause');
+  },
+  goToNextLightset() {
+    "use strict";
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+    this.set('lightset', 0);
+    return this.get('experimentGateway').reportFinish(userid, userpass)
+      .then(() => Ember.run.later(this.getNextLightset(), 500))
+      .catch(this.reportError.bind(this));
   }
 });
