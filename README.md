@@ -1,6 +1,11 @@
 # 1023 alternatives
 
 Conduct Robert Seibel's 1023-alternative experiment.
+Requires a [backend app](https://github.com/piotrb5e3/1023alternative-backend)
+
+## Warning
+At best it's a PoC. Not suitable for deployment, not secured properly, not tested.
+If you are in need of an app like this one, contact me at piotrb5e3@gmail.com
 
 ## Prerequisites
 
