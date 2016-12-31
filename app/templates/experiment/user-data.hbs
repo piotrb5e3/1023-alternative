@@ -1,0 +1,47 @@
+<div id="user-data-card" class="card">
+  <form {{action "formSubmit" on="submit" }}>
+    <div class="card-content">
+      <p class="card-title">User information</p>
+
+      <div class="form-row">
+        {{md-input
+          value=username
+          label='Name'
+          type='text'
+          validate=true
+          errors=(if name errors.username (if errors.username invisibleErrors null))
+        }}
+      </div>
+      <div>Gender
+        <small class="red-text">
+          {{#each errors.usersex as |err|}}
+            {{err}}
+          {{/each}}</small>
+      </div>
+      <div class="form-row">
+        {{md-radios
+          selection=usersex
+          content=usersexOptions
+          optionValuePath='id'
+          optionLabelPath='name'}}
+      </div>
+
+      <div class="form-row">
+        {{md-input
+          value=userage
+          label='Age'
+          type='number'
+          min=1
+          validate=true
+          errors=(if userage errors.userage (if errors.userage invisibleErrors null))
+        }}
+      </div>
+    </div>
+    <div class="card-action">
+      {{md-btn-submit icon='mdi-content-send'
+                      iconPosition='right'
+                      text='Submit'}}
+    </div>
+  </form>
+</div>
+{{outlet}}
