@@ -10,6 +10,7 @@
           <th>Started on</th>
           <th>Status</th>
           <th>Progress</th>
+          <th>Download report</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +21,12 @@
             <td>{{moment-calendar session.startedon}}</td>
             <td>{{session.status_str}}</td>
             <td>{{custom-progressbar progress=session.progress}}</td>
+            <td>
+              <form action="http://localhost:8000/api/extra/report" method="post">
+                <input type="hidden" name="session_id" value="{{session.id}}">
+                <input type="submit" value="Download">
+              </form>
+            </td>
           </tr>
         {{else}}
           <tr>
