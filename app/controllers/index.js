@@ -29,16 +29,16 @@ export default Ember.Controller.extend(EmberValidations, {
   actions: {
     formSubmit: function () {
       this.validate().then(() => {
-        this.get('experimentOverseer')
-          .initExperiment(this, this.get('userid'), this.get('userpass'))
+        return this.get('experimentOverseer')
+          .initExperiment(this.get('userid'), this.get('userpass'))
           .then(() => {
             "use strict";
             this.set('userid', null);
             this.set('userpass', null);
             if (this.get('experimentOverseer').shouldAskForData()) {
-              this.transitionToRoute('experiment.user-data');
+              return this.transitionToRoute('experiment.user-data');
             } else {
-              this.transitionToRoute('experiment');
+              return this.transitionToRoute('experiment');
             }
           })
           .catch((err) => {

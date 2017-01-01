@@ -6,13 +6,24 @@ export default Ember.Controller.extend(EKMixin, {
   lights: Ember.computed.alias('experimentOverseer.lights'),
 
   handleKeyDown: Ember.on(keyDown(), function (event) {
-    this.get('experimentOverseer').handleKeyPress(getCode(event));
+    let code = getCode(event);
+    if (code === 'Escape') {
+      this.get('experimentOverseer').pauseCurrentLightset().then(() => {
+        "use strict";
+        this.redirectToPausePage().then(() => {
+          this.get('experimentOverseer').cleanup();
+        });
+      });
+    } else {
+      this.get('experimentOverseer').handleKeyPress(code);
+    }
   }),
-  setupExperiment: Ember.on('init', function () {
-    this.get('experimentOverseer').initExperiment(this, 'user', 'useruser').catch(function (err) {
-      "use strict";
-      alert(JSON.stringify(err));
-    });
+  redirectToPausePage() {
+    "use strict";
+    this.get('controller').transitionToRoute('experiment.pause');
+  },
+  startExperiment: Ember.on('init', function () {
+    this.get('experimentOverseer').getNextLightset().catch((err) => alert(JSON.stringify(err)));
   }),
   activateKeyboard: Ember.on('init', function () {
     this.set('keyboardActivated', true);

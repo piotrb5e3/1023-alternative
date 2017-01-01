@@ -41,9 +41,6 @@ export default Ember.Service.extend({
   handleKeyPress(keyCode) {
     "use strict";
     switch (keyCode) {
-      case 'Escape':
-        this.pauseButtonPressed();
-        break;
       case 'KeyQ':
         this.goToNextLightset();
         break;
@@ -52,16 +49,16 @@ export default Ember.Service.extend({
         break;
     }
   },
-  initExperiment(controller, userid, userpass) {
+  initExperiment(userid, userpass) {
     "use strict";
-    this.set('userid', userid);
-    this.set('userpass', userpass);
-    this.set('controller', controller);
     return this.get('experimentGateway').retrieveSettings(userid, userpass)
-      .then(function (settings) {
+      .then((settings) => {
+        this.set('userid', userid);
+        this.set('userpass', userpass);
         this.set('settings', settings);
-        this.pauseCurrentLightset().then(this.getNextLightset.bind(this), this.getNextLightset.bind(this));
-      }.bind(this));
+        this.pauseCurrentLightset().catch(() => {
+        });
+      });
   },
   getNextLightset() {
     "use strict";
@@ -85,14 +82,6 @@ export default Ember.Service.extend({
     "use strict";
     console.log(JSON.stringify(err));
   },
-  pauseButtonPressed() {
-    "use strict";
-    this.pauseCurrentLightset().then(this.redirectToPausePage.bind(this));
-  },
-  redirectToPausePage() {
-    "use strict";
-    this.get('controller').transitionToRoute('experiment.pause');
-  },
   goToNextLightset() {
     "use strict";
     let userid = this.get('userid');
@@ -108,8 +97,19 @@ export default Ember.Service.extend({
     let userpass = this.get('userpass');
     return this.get('experimentGateway').reportUserData(userid, userpass, data);
   },
-  shouldAskForData(){
+  shouldAskForData() {
     "use strict";
     return this.get('settings.askUserData');
+  },
+  cleanup(){
+    "use strict";
+    this.set('settings', null);
+    this.set('lightset', 0);
+    this.set('userid', null);
+    this.set('userpass', null);
+  },
+  isAuthenticated(){
+    "use strict";
+    return !!this.get('userid');
   }
 });
