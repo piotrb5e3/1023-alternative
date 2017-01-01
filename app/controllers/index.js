@@ -35,11 +35,7 @@ export default Ember.Controller.extend(EmberValidations, {
             "use strict";
             this.set('userid', null);
             this.set('userpass', null);
-            if (this.get('experimentOverseer').shouldAskForData()) {
-              return this.transitionToRoute('experiment.user-data');
-            } else {
-              return this.transitionToRoute('experiment');
-            }
+            return this.transitionToRoute('experiment');
           })
           .catch((err) => {
             let e = err.errors[0].title;
