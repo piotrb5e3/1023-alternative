@@ -4,7 +4,10 @@ import {EKMixin, keyDown, getCode} from 'ember-keyboard';
 export default Ember.Controller.extend(EKMixin, {
   experimentOverseer: Ember.inject.service(),
   lights: Ember.computed.alias('experimentOverseer.lights'),
-
+  isModalOpen: Ember.computed.alias('experimentOverseer.isModalOpen'),
+  modalHeader: Ember.computed.alias('experimentOverseer.modalHeader'),
+  modalText: Ember.computed.alias('experimentOverseer.modalText'),
+  modalBtnText: Ember.computed.alias('experimentOverseer.modalBtnText'),
   handleKeyDown: Ember.on(keyDown(), function (event) {
     let code = getCode(event);
     if (code === 'Escape') {
@@ -20,12 +23,18 @@ export default Ember.Controller.extend(EKMixin, {
   }),
   redirectToPausePage() {
     "use strict";
-    this.get('controller').transitionToRoute('experiment.pause');
+    this.transitionToRoute('experiment.pause');
   },
-  startExperiment: Ember.on('init', function () {
-    this.get('experimentOverseer').getNextLightset().catch((err) => alert(JSON.stringify(err)));
+  enterExperiment: Ember.on('init', function () {
+    this.get('experimentOverseer').enterExperiment();
   }),
   activateKeyboard: Ember.on('init', function () {
     this.set('keyboardActivated', true);
-  })
+  }),
+  actions: {
+    modalBtnPressed() {
+      "use strict";
+      this.get('experimentOverseer').modalNext();
+    }
+  }
 });

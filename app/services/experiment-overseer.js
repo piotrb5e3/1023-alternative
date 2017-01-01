@@ -8,6 +8,10 @@ export default Ember.Service.extend({
   userid: null,
   userpass: null,
   controller: null,
+  isModalOpen: false,
+  modalHeader: 'Hai',
+  modalText: "You aren't supposed to see this :frown:",
+  modalBtnText: 'Next?',
   audio: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
   oscillator: Ember.computed('audio', function () {
@@ -111,5 +115,60 @@ export default Ember.Service.extend({
   isAuthenticated(){
     "use strict";
     return !!this.get('userid');
+  },
+  modalNext: () => {
+    alert('What happened?');
+  },
+  trainingStartInfo() {
+    "use strict";
+    this.set('isModalOpen', true);
+    this.set('modalHeader', 'Instructions');
+    this.set('modalText', 'Instructions placeholder');
+    this.set('modalBtnText', 'NEXT');
+    this.set('modalNext', () => {
+      this.set('modalHeader', 'Training session');
+      this.set('modalText', 'When you close this alert, the training session will start.');
+      this.set('modalBtnText', 'CLOSE');
+      this.set('modalNext', () => {
+        this.set('isModalOpen', false);
+        this.beginTrainingSession();
+      });
+    });
+  },
+  trainingEndInfo() {
+    "use strict";
+    this.set('isModalOpen', true);
+    this.set('modalHeader', 'Experiment');
+    this.set('modalText', 'The training session is now finished. ' +
+      'Experiment session will start 10 seconds after you close this alert');
+    this.set('modalBtnText', 'NEXT');
+    this.set('modalNext', () => this.beginExperimentSession());
+  },
+  beginTrainingSession() {
+    "use strict";
+    alert('Training start!');
+    Ember.run.later(() => this.trainingEndInfo(), 2000);
+  },
+  beginExperimentSession() {
+    "use strict";
+    this.set('modalHeader', 'Experiment');
+    this.set('modalText', 'Get ready, the experiment will start in 10 seconds.');
+    this.set('modalBtnText', '');
+    this.set('modalNext', () => {
+    });
+    this.set('isModalOpen', true);
+    Ember.run.later(() => {
+      this.set('isModalOpen', false);
+      this.getNextLightset();
+    }, 5000);
+  },
+  enterExperiment() {
+    "use strict";
+    let settings = this.get('settings');
+    if (settings.runTrainingSession) {
+      this.trainingStartInfo();
+    } else {
+      this.beginExperimentSession();
+    }
   }
 });
