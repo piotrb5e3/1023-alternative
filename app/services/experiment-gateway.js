@@ -69,5 +69,15 @@ export default Ember.Service.extend({
         userpass: userpass
       }
     });
+  },
+  reportTrainingFinished(userid, userpass) {
+    "use strict";
+    return this.get('ajax').request('extra/training-finished', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass
+      }
+    });
   }
 });

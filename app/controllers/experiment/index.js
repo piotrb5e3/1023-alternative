@@ -23,7 +23,7 @@ export default Ember.Controller.extend(EKMixin, {
   }),
   redirectToPausePage() {
     "use strict";
-    this.transitionToRoute('experiment.pause');
+    return this.transitionToRoute('experiment.pause');
   },
   enterExperiment: Ember.on('init', function () {
     this.get('experimentOverseer').enterExperiment();

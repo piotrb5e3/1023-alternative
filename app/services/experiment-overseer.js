@@ -137,6 +137,7 @@ export default Ember.Service.extend({
   },
   trainingEndInfo() {
     "use strict";
+    this.reportTrainingFinished();
     this.set('isModalOpen', true);
     this.set('modalHeader', 'Experiment');
     this.set('modalText', 'The training session is now finished. ' +
@@ -170,5 +171,13 @@ export default Ember.Service.extend({
     } else {
       this.beginExperimentSession();
     }
+  },
+  reportTrainingFinished() {
+    "use strict";
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+    this.get('experimentGateway').reportTrainingFinished(userid, userpass).catch((err) => {
+      console.log(JSON.stringify(err));
+    });
   }
 });
