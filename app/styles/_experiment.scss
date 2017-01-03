@@ -1,9 +1,5 @@
 @import 'common';
 
-body {
-  background-color: $experiment-background;
-}
-
 #experiment-base {
   width: 1024px;
   margin: auto;
@@ -36,3 +32,6 @@ body {
   margin-top: 100px;
 }
 
+.experiment-bg {
+  background-color: $experiment-background;
+}
