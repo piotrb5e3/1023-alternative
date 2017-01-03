@@ -13,9 +13,22 @@ export default DS.Model.extend({
   startedon: DS.attr('date'),
   finishedon: DS.attr('date'),
   status_str: Ember.computed('status', function () {
+    "use strict";
     return {
       F: 'Finished',
       P: 'In progress'
     }[this.get('status')];
   }),
+  usersex_str: Ember.computed('usersex', function () {
+    "use strict";
+    let usersex = this.get('usersex');
+    if (usersex) {
+      return {
+        'M': 'Male',
+        'F': 'Female'
+      }[usersex];
+    } else {
+      return null;
+    }
+  })
 });

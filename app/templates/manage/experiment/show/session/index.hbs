@@ -1,0 +1,64 @@
+<div class="col s6">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Subject</span>
+
+      <dl>
+        <dt>Subject id:</dt>
+        <dd>{{model.userid}}</dd>
+        <dt>Subject name:</dt>
+        <dd>{{ndWrap model.username}}</dd>
+        <dt>Subject age:</dt>
+        <dd>{{ndWrap model.userage}}</dd>
+        <dt>Subject gender:</dt>
+        <dd>{{ndWrap model.usersex_str}}</dd>
+        <dt>Subject password:</dt>
+        <dd>{{model.userpass}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+<div class="col s3">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Session</span>
+      <dl>
+        <dt>Status:</dt>
+        <dd>{{model.status_str}}</dd>
+        <dt>Progress:</dt>
+        <dd>{{custom-progressbar progress=model.progress}}</dd>
+        <dt>Started on:</dt>
+        <dd>{{moment-calendar model.startedon}}</dd>
+        <dt>Finished on:</dt>
+        <dd>{{if model.finishedon (moment-calendar model.finishedon) (nd-wrap model.finishedon)}}</dd>
+        <dt>Download report:</dt>
+        <dd>
+          <form action="http://localhost:8000/api/extra/report" method="post">
+            <input type="hidden" name="session_id" value="{{model.id}}">
+            <input type="submit" value="Download">
+          </form>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+<div class="col s3">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <span class="card-title">Experiment settings</span>
+      <dl>
+        <dt>Name:</dt>
+        <dd>{{model.experiment.name}}</dd>
+        <dt>Light-off mode:</dt>
+        <dd>{{model.experiment.lightoffmode_str}}</dd>
+        <dt>Light-off timeout:</dt>
+        <dd>{{model.experiment.lightofftimeout}} ms</dd>
+        <dt>Audio mode:</dt>
+        <dd>{{model.experiment.audiomode_str}}</dd>
+        <dt>Repeats:</dt>
+        <dd>{{model.experiment.repeatscount}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+{{outlet}}

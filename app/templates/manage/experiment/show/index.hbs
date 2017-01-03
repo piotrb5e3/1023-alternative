@@ -16,7 +16,11 @@
         <tbody>
         {{#each sortedSessions as |session|}}
           <tr>
-            <td>{{session.userid}}</td>
+            <td>
+              {{#link-to 'manage.experiment.show.session' session}}
+                {{session.userid}}
+              {{/link-to}}
+            </td>
             <td>{{session.username}}</td>
             <td>{{moment-calendar session.startedon}}</td>
             <td>{{session.status_str}}</td>
