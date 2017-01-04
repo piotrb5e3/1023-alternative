@@ -38,6 +38,7 @@ export default Ember.Service.extend({
       identifier: 'C6'
     });
   }),
+  isTrainingSession: false,
   isLightoffInProgress: false,
   lightset: 0,
   lightsetMask: 0,
@@ -49,19 +50,15 @@ export default Ember.Service.extend({
     "use strict";
     Ember.run.once(() => {
       let lightoffMode = this.get('settings.lightoffmode');
-      console.log('LO mode: ' + lightoffMode);
       if (lightoffMode === 'waiting') {
         let lightset = this.get('lightset');
         let lightsetMask = this.get('lightsetMask');
         let lightoffTimeout = this.get('settings.lightofftimeout');
         let isLightoffInProgress = this.get('isLightoffInProgress');
-        console.log(`State: ls: ${lightset} lsm: ${lightsetMask} isLO: ${isLightoffInProgress}\n
-          ls&lsm: ${lightset & lightsetMask} ls&lsm==ls: ${(lightset & lightsetMask) === lightset}`);
         if (!isLightoffInProgress &&
           lightset !== 0 &&
           ((lightset & lightsetMask) === lightset)
         ) {
-          console.log('fin!');
           this.set('isLightoffInProgress', true);
           Ember.run.later(() => {
             this.finishShowingCombination();
@@ -115,17 +112,26 @@ export default Ember.Service.extend({
   },
   getNextLightset() {
     "use strict";
+    let isTrainingSession = this.get('isTrainingSession');
+    let lightoffMode = this.get('settings.lightoffmode');
     let userid = this.get('userid');
     let userpass = this.get('userpass');
     this.set('lightset', 0);
     this.set('lightsetMask', 0);
     this.set('isLightoffInProgress', false);
-    return this.get('experimentGateway').retrieveLightset(userid, userpass).then(
-      (lightset) => {
-        this.set('lightset', lightset);
-      }).then(
-      () => this.get('experimentGateway').reportBegin(userid, userpass)
-    ).catch((err) => this.reportError(err));
+    if (isTrainingSession) {
+      alert('Not implemented!');
+    } else {
+      return this.get('experimentGateway').retrieveLightset(userid, userpass).then(
+        (lightset) => {
+          this.set('lightset', lightset);
+          if (lightoffMode === 'fixed') {
+            let lightoffTimeout = this.get('settings.lightofftimeout');
+            Ember.run.later(() => this.finishShowingCombination(), lightoffTimeout);
+          }
+          return this.get('experimentGateway').reportBegin(userid, userpass);
+        }).catch((err) => console.error(JSON.stringify(err)));
+    }
   },
   pauseCurrentLightset() {
     "use strict";
@@ -136,7 +142,7 @@ export default Ember.Service.extend({
   },
   reportError(err) {
     "use strict";
-    console.log(JSON.stringify(err));
+    console.error(JSON.stringify(err));
   },
   reportLightsetShowingFinished() {
     "use strict";
@@ -234,7 +240,7 @@ export default Ember.Service.extend({
     this.set('lightset', 0);
     this.reportLightsetShowingFinished()
       .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
-      .catch((err) => console.log('ERR ' + JSON.stringify(err)));
+      .catch((err) => console.error(JSON.stringify(err)));
   },
   onCorrectKeyPressed(keyNumber){
     "use strict";
