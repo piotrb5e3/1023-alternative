@@ -4,6 +4,19 @@ import {MusicalIdentity} from 'ember-audio/mixins';
 
 const delayBetweenLightsets = 1000;
 
+const buttonMapper = {
+  'KeyQ': 1,
+  'KeyW': 2,
+  'KeyE': 3,
+  'KeyR': 4,
+  'KeyV': 5,
+  'KeyB': 6,
+  'KeyY': 7,
+  'KeyU': 8,
+  'KeyI': 9,
+  'KeyO': 10
+};
+
 const Beeper = Oscillator.extend(MusicalIdentity);
 
 export default Ember.Service.extend({
@@ -25,10 +38,37 @@ export default Ember.Service.extend({
       identifier: 'C6'
     });
   }),
+  isLightoffInProgress: false,
   lightset: 0,
+  lightsetMask: 0,
   isDisplayingLightset: Ember.computed('lightset', function () {
     "use strict";
     return this.get('lightset') !== 0;
+  }),
+  waitingLightoffObserver: Ember.observer('lightset', 'lightsetMask', function () {
+    "use strict";
+    Ember.run.once(() => {
+      let lightoffMode = this.get('settings.lightoffmode');
+      console.log('LO mode: ' + lightoffMode);
+      if (lightoffMode === 'waiting') {
+        let lightset = this.get('lightset');
+        let lightsetMask = this.get('lightsetMask');
+        let lightoffTimeout = this.get('settings.lightofftimeout');
+        let isLightoffInProgress = this.get('isLightoffInProgress');
+        console.log(`State: ls: ${lightset} lsm: ${lightsetMask} isLO: ${isLightoffInProgress}\n
+          ls&lsm: ${lightset & lightsetMask} ls&lsm==ls: ${(lightset & lightsetMask) === lightset}`);
+        if (!isLightoffInProgress &&
+          lightset !== 0 &&
+          ((lightset & lightsetMask) === lightset)
+        ) {
+          console.log('fin!');
+          this.set('isLightoffInProgress', true);
+          Ember.run.later(() => {
+            this.finishShowingCombination();
+          }, lightoffTimeout);
+        }
+      }
+    });
   }),
   lights: Ember.computed('lightset', function () {
     "use strict";
@@ -50,13 +90,15 @@ export default Ember.Service.extend({
   },
   handleKeyPress(keyCode) {
     "use strict";
-    switch (keyCode) {
-      case 'KeyQ':
-        this.finishShowingCombination();
-        break;
-      default:
-        this.playBeep();
-        break;
+    if (!this.get('isDisplayingLightset')) {
+      console.info('Button pressed when no combination was shown');
+      return;
+    }
+    if (keyCode in buttonMapper) {
+      let number = buttonMapper[keyCode];
+      this.onCorrectKeyPressed(number);
+    } else {
+      this.playBeep();
     }
   },
   initExperiment(userid, userpass) {
@@ -67,6 +109,7 @@ export default Ember.Service.extend({
         this.set('userpass', userpass);
         this.set('settings', settings);
         this.pauseCurrentLightset().catch(() => {
+          console.info('No lightset to be paused.');
         });
       });
   },
@@ -74,6 +117,9 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
+    this.set('lightset', 0);
+    this.set('lightsetMask', 0);
+    this.set('isLightoffInProgress', false);
     return this.get('experimentGateway').retrieveLightset(userid, userpass).then(
       (lightset) => {
         this.set('lightset', lightset);
@@ -183,11 +229,18 @@ export default Ember.Service.extend({
       console.log('ERR ' + JSON.stringify(err));
     });
   },
-  finishShowingCombination() {
+  finishShowingCombination(){
     "use strict";
     this.set('lightset', 0);
     this.reportLightsetShowingFinished()
       .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
       .catch((err) => console.log('ERR ' + JSON.stringify(err)));
+  },
+  onCorrectKeyPressed(keyNumber){
+    "use strict";
+    let mask = this.get('lightsetMask');
+    this.set('lightsetMask', mask | 1 << (keyNumber - 1));
+    console.log('Pressed ' + keyNumber);
+    console.log('New lightsetMask: ' + (mask | 1 << (keyNumber - 1)));
   }
 });
