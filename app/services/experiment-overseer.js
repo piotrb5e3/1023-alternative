@@ -1,7 +1,9 @@
 import Ember from 'ember';
-
+import RSVP from 'rsvp';
 
 const delayBetweenLightsets = 1000;
+
+const TRAINING_SESSION_LENGTH = 100;
 
 const INCORRECT_KEY_NUMBER = -1;
 
@@ -29,6 +31,7 @@ export default Ember.Service.extend({
   beeper: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
   isTrainingSession: false,
+  trainingSessionCounter: 0,
   isLightoffInProgress: false,
   lightset: 0,
   lightsetMask: 0,
@@ -104,7 +107,11 @@ export default Ember.Service.extend({
     this.set('lightsetMask', 0);
     this.set('isLightoffInProgress', false);
     if (isTrainingSession) {
-      alert('Not implemented!');
+      this.set('lightset', 128);
+      if (lightoffMode === 'fixed') {
+        let lightoffTimeout = this.get('settings.lightofftimeout');
+        Ember.run.later(() => this.finishShowingCombination(), lightoffTimeout);
+      }
     } else {
       return this.get('experimentGateway').retrieveLightset(userid, userpass)
         .then((lightset) => {
@@ -121,8 +128,13 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    return this.get('experimentGateway').reportPause(userid, userpass)
-      .catch(this.reportError.bind(this));
+    if (this.get('isTrainingSession') || this.get('lightset') === 0 || !userid) {
+      return new RSVP.Promise(function (resolve /*, reject */) {
+        resolve();
+      });
+    } else {
+      return this.get('experimentGateway').reportPause(userid, userpass);
+    }
   },
   reportError(err) {
     "use strict";
@@ -132,6 +144,9 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
+    if (this.get('isTrainingSession')) {
+      console.error('Reporting during training session!');
+    }
     return this.get('experimentGateway').reportFinish(userid, userpass);
   },
   reportUserData(data) {
@@ -177,6 +192,7 @@ export default Ember.Service.extend({
   trainingEndInfo() {
     "use strict";
     this.reportTrainingFinished();
+    this.set('lightset', 0);
     this.set('isModalOpen', true);
     this.set('modalHeader', 'Experiment');
     this.set('modalText', 'The training session is now finished. ' +
@@ -186,11 +202,13 @@ export default Ember.Service.extend({
   },
   beginTrainingSession() {
     "use strict";
-    alert('Training start!');
-    Ember.run.later(() => this.trainingEndInfo(), 2000);
+    this.set('isTrainingSession', true);
+    this.set('trainingSessionCounter', TRAINING_SESSION_LENGTH);
+    this.getNextLightset();
   },
   beginExperimentSession() {
     "use strict";
+    this.set('isTrainingSession', false);
     this.set('modalHeader', 'Experiment');
     this.set('modalText', 'Get ready, the experiment will start in 10 seconds.');
     this.set('modalBtnText', '');
@@ -221,9 +239,19 @@ export default Ember.Service.extend({
   finishShowingCombination() {
     "use strict";
     this.set('lightset', 0);
-    this.reportLightsetShowingFinished()
-      .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
-      .catch(this.reportError.bind(this));
+    if (this.get('isTrainingSession')) {
+      let count = this.get('trainingSessionCounter') - 1;
+      this.set('trainingSessionCounter', count);
+      if (count <= 0) {
+        this.trainingEndInfo();
+      } else {
+        Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets);
+      }
+    } else {
+      this.reportLightsetShowingFinished()
+        .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
+        .catch(this.reportError.bind(this));
+    }
   },
   onCorrectKeyPressed(keyNumber) {
     "use strict";
