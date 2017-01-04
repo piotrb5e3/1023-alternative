@@ -112,6 +112,11 @@ export default Ember.Service.extend({
     this.set('lightset', 0);
     this.set('lightsetMask', 0);
     this.set('isLightoffInProgress', false);
+    if (!userid) {
+      console.warn('GetNextLightset without credentials!');
+      this.set('lightset', 0);
+      return;
+    }
     if (isTrainingSession) {
       this.set('lightset', 128);
       if (lightoffMode === 'fixed') {
@@ -134,7 +139,7 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    if (this.get('isTrainingSession') || this.get('lightset') === 0 || !userid) {
+    if (this.get('isTrainingSession') || !userid) {
       return new RSVP.Promise(function (resolve /*, reject */) {
         resolve();
       });
@@ -249,6 +254,10 @@ export default Ember.Service.extend({
   finishShowingCombination() {
     "use strict";
     this.set('lightset', 0);
+    if (!this.get('userid')) {
+      console.warn('Finish showing without credentials!');
+      return;
+    }
     if (this.get('isTrainingSession')) {
       let count = this.get('trainingSessionCounter') - 1;
       this.set('trainingSessionCounter', count);
