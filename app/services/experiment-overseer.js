@@ -122,15 +122,15 @@ export default Ember.Service.extend({
     if (isTrainingSession) {
       alert('Not implemented!');
     } else {
-      return this.get('experimentGateway').retrieveLightset(userid, userpass).then(
-        (lightset) => {
+      return this.get('experimentGateway').retrieveLightset(userid, userpass)
+        .then((lightset) => {
           this.set('lightset', lightset);
           if (lightoffMode === 'fixed') {
             let lightoffTimeout = this.get('settings.lightofftimeout');
             Ember.run.later(() => this.finishShowingCombination(), lightoffTimeout);
           }
           return this.get('experimentGateway').reportBegin(userid, userpass);
-        }).catch((err) => console.error(JSON.stringify(err)));
+        }).catch(this.reportError.bind(this));
     }
   },
   pauseCurrentLightset() {
@@ -216,7 +216,7 @@ export default Ember.Service.extend({
     Ember.run.later(() => {
       this.set('isModalOpen', false);
       this.getNextLightset();
-    }, 5000);
+    }, 10000);
   },
   enterExperiment() {
     "use strict";
@@ -231,16 +231,15 @@ export default Ember.Service.extend({
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    this.get('experimentGateway').reportTrainingFinished(userid, userpass).catch((err) => {
-      console.log('ERR ' + JSON.stringify(err));
-    });
+    this.get('experimentGateway').reportTrainingFinished(userid, userpass)
+      .catch(this.reportError.bind(this));
   },
   finishShowingCombination(){
     "use strict";
     this.set('lightset', 0);
     this.reportLightsetShowingFinished()
       .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
-      .catch((err) => console.error(JSON.stringify(err)));
+      .catch(this.reportError.bind(this));
   },
   onCorrectKeyPressed(keyNumber){
     "use strict";
