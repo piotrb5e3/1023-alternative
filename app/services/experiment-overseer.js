@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import {Oscillator} from 'ember-audio';
-import {MusicalIdentity} from 'ember-audio/mixins';
+
 
 const delayBetweenLightsets = 1000;
 
@@ -17,8 +16,6 @@ const buttonMapper = {
   'KeyO': 10
 };
 
-const Beeper = Oscillator.extend(MusicalIdentity);
-
 export default Ember.Service.extend({
   userid: null,
   userpass: null,
@@ -27,17 +24,8 @@ export default Ember.Service.extend({
   modalHeader: 'Hai',
   modalText: "You aren't supposed to see this :frown:",
   modalBtnText: 'Next?',
-  audio: Ember.inject.service(),
+  beeper: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
-  oscillator: Ember.computed('audio', function () {
-    "use strict";
-    const audioContext = this.get('audio.audioContext');
-
-    return Beeper.create({
-      audioContext,
-      identifier: 'C6'
-    });
-  }),
   isTrainingSession: false,
   isLightoffInProgress: false,
   lightset: 0,
@@ -79,12 +67,6 @@ export default Ember.Service.extend({
     }
     return r;
   }),
-  playBeep () {
-    "use strict";
-    Ember.run.later(() => {
-      this.get('oscillator').playFor(0.1);
-    }, 200);
-  },
   handleKeyPress(keyCode) {
     "use strict";
     if (!this.get('isDisplayingLightset')) {
@@ -95,7 +77,7 @@ export default Ember.Service.extend({
       let number = buttonMapper[keyCode];
       this.onCorrectKeyPressed(number);
     } else {
-      this.playBeep();
+      this.get('beeper').playBeep();
     }
   },
   initExperiment(userid, userpass) {
