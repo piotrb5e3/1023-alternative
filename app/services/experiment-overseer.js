@@ -118,7 +118,7 @@ export default Ember.Service.extend({
       return;
     }
     if (isTrainingSession) {
-      this.set('lightset', 128);
+      this.set('lightset', this.generateRandomCombination());
       if (lightoffMode === 'fixed') {
         let lightoffTimeout = this.get('settings.lightofftimeout');
         Ember.run.later(() => this.finishShowingCombination(), lightoffTimeout);
@@ -321,5 +321,9 @@ export default Ember.Service.extend({
     this.pauseCurrentLightset().then(() => {
       this.set('shouldRedirectToPause', true);
     }).catch(this.reportError.bind(this));
+  },
+  generateRandomCombination() {
+    "use strict";
+    return Math.floor(Math.random() * 1023) + 1;
   }
 });
