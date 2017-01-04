@@ -3,6 +3,8 @@ import Ember from 'ember';
 
 const delayBetweenLightsets = 1000;
 
+const INCORRECT_KEY_NUMBER = -1;
+
 const buttonMapper = {
   'KeyQ': 1,
   'KeyW': 2,
@@ -77,7 +79,7 @@ export default Ember.Service.extend({
       let number = buttonMapper[keyCode];
       this.onCorrectKeyPressed(number);
     } else {
-      this.get('beeper').playBeep();
+      this.onIncorrectKeyPressed();
     }
   },
   initExperiment(userid, userpass) {
@@ -216,18 +218,47 @@ export default Ember.Service.extend({
     this.get('experimentGateway').reportTrainingFinished(userid, userpass)
       .catch(this.reportError.bind(this));
   },
-  finishShowingCombination(){
+  finishShowingCombination() {
     "use strict";
     this.set('lightset', 0);
     this.reportLightsetShowingFinished()
       .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
       .catch(this.reportError.bind(this));
   },
-  onCorrectKeyPressed(keyNumber){
+  onCorrectKeyPressed(keyNumber) {
     "use strict";
+    let isTrainingSession = this.get('isTrainingSession');
+    let lights = this.get('lights');
+    let audioMode = this.get('settings.audiomode');
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+
     let mask = this.get('lightsetMask');
     this.set('lightsetMask', mask | 1 << (keyNumber - 1));
-    console.log('Pressed ' + keyNumber);
-    console.log('New lightsetMask: ' + (mask | 1 << (keyNumber - 1)));
+
+    if (!isTrainingSession) {
+      this.get('experimentGateway').reportPress(userid, userpass, keyNumber)
+        .catch(this.reportError.bind(this));
+    }
+
+    if (audioMode === 'beep' && !(lights[keyNumber].on)) {
+      this.get('beeper').playBeep();
+    }
+  },
+  onIncorrectKeyPressed() {
+    "use strict";
+    let isTrainingSession = this.get('isTrainingSession');
+    let audioMode = this.get('settings.audiomode');
+    let userid = this.get('userid');
+    let userpass = this.get('userpass');
+
+    if (!isTrainingSession) {
+      this.get('experimentGateway').reportPress(userid, userpass, INCORRECT_KEY_NUMBER)
+        .catch(this.reportError.bind(this));
+    }
+
+    if (audioMode === 'beep') {
+      this.get('beeper').playBeep();
+    }
   }
 });

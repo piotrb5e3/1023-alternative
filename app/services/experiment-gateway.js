@@ -2,10 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   ajax: Ember.inject.service(),
-  reportPress(keycode) {
-    "use strict";
-    alert('Not yet implemented!');
-  },
   reportUserData(userid, userpass, {username, usersex, userage}) {
     "use strict";
     return this.get('ajax').request('extra/report-data', {
@@ -77,6 +73,17 @@ export default Ember.Service.extend({
       data: {
         userid: userid,
         userpass: userpass
+      }
+    });
+  },
+  reportPress(userid, userpass, number) {
+    "use strict";
+    return this.get('ajax').request('extra/eventbutton', {
+      method: 'GET',
+      data: {
+        userid: userid,
+        userpass: userpass,
+        number: number
       }
     });
   }
