@@ -2,6 +2,8 @@ import Ember from 'ember';
 import {Oscillator} from 'ember-audio';
 import {MusicalIdentity} from 'ember-audio/mixins';
 
+const delayBetweenLightsets = 1000;
+
 const Beeper = Oscillator.extend(MusicalIdentity);
 
 export default Ember.Service.extend({
@@ -24,6 +26,10 @@ export default Ember.Service.extend({
     });
   }),
   lightset: 0,
+  isDisplayingLightset: Ember.computed('lightset', function () {
+    "use strict";
+    return this.get('lightset') !== 0;
+  }),
   lights: Ember.computed('lightset', function () {
     "use strict";
     var l = this.get('lightset');
@@ -46,7 +52,7 @@ export default Ember.Service.extend({
     "use strict";
     switch (keyCode) {
       case 'KeyQ':
-        this.goToNextLightset();
+        this.finishShowingCombination();
         break;
       default:
         this.playBeep();
@@ -86,14 +92,11 @@ export default Ember.Service.extend({
     "use strict";
     console.log(JSON.stringify(err));
   },
-  goToNextLightset() {
+  reportLightsetShowingFinished() {
     "use strict";
     let userid = this.get('userid');
     let userpass = this.get('userpass');
-    this.set('lightset', 0);
-    return this.get('experimentGateway').reportFinish(userid, userpass)
-      .then(() => Ember.run.later(this.getNextLightset(), 500))
-      .catch(this.reportError.bind(this));
+    return this.get('experimentGateway').reportFinish(userid, userpass);
   },
   reportUserData(data) {
     "use strict";
@@ -177,7 +180,14 @@ export default Ember.Service.extend({
     let userid = this.get('userid');
     let userpass = this.get('userpass');
     this.get('experimentGateway').reportTrainingFinished(userid, userpass).catch((err) => {
-      console.log(JSON.stringify(err));
+      console.log('ERR ' + JSON.stringify(err));
     });
+  },
+  finishShowingCombination() {
+    "use strict";
+    this.set('lightset', 0);
+    this.reportLightsetShowingFinished()
+      .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
+      .catch((err) => console.log('ERR ' + JSON.stringify(err)));
   }
 });
