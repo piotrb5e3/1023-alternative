@@ -19,6 +19,7 @@ Router.map(function () {
   this.route('experiment', function () {
     this.route('pause');
     this.route('user-data');
+    this.route('thank-you');
   });
 });
 

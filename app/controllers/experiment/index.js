@@ -1,40 +1,32 @@
 import Ember from 'ember';
-import {EKMixin, keyDown, getCode} from 'ember-keyboard';
 
-export default Ember.Controller.extend(EKMixin, {
+export default Ember.Controller.extend({
   experimentOverseer: Ember.inject.service(),
-  lights: Ember.computed.alias('experimentOverseer.lights'),
-  isModalOpen: Ember.computed.alias('experimentOverseer.isModalOpen'),
-  modalHeader: Ember.computed.alias('experimentOverseer.modalHeader'),
-  modalText: Ember.computed.alias('experimentOverseer.modalText'),
-  modalBtnText: Ember.computed.alias('experimentOverseer.modalBtnText'),
-  handleKeyDown: Ember.on(keyDown(), function (event) {
-    let code = getCode(event);
-    if (code === 'Escape') {
-      this.get('experimentOverseer').pauseCurrentLightset().then(() => {
-        "use strict";
-        this.redirectToPausePage().then(() => {
-          this.get('experimentOverseer').cleanup();
-        });
-      });
-    } else {
-      this.get('experimentOverseer').handleKeyPress(code);
+  shouldRedirectToPause: Ember.computed.alias('experimentOverseer.shouldRedirectToPause'),
+  shouldRedirectToThankYou: Ember.computed.alias('experimentOverseer.shouldRedirectToThankYou'),
+  thankYouRedirectObserver: Ember.observer('shouldRedirectToThankYou', function () {
+    "use strict";
+    if (this.get('shouldRedirectToThankYou')) {
+      this.redirectToThankYouPage();
+    }
+  }),
+  pauseRedirectObserver: Ember.observer('shouldRedirectToPause', function () {
+    "use strict";
+    if (this.get('shouldRedirectToPause')) {
+      this.redirectToPausePage();
     }
   }),
   redirectToPausePage() {
     "use strict";
     return this.transitionToRoute('experiment.pause');
   },
-  enterExperiment: Ember.on('init', function () {
-    this.get('experimentOverseer').enterExperiment();
+  redirectToThankYouPage() {
+    "use strict";
+    return this.transitionToRoute('experiment.thank-you');
+  },
+  runOnInit: Ember.on('init', function () {
+    "use strict";
+    this.get('shouldRedirectToPause');
+    this.get('shouldRedirectToThankYou');
   }),
-  activateKeyboard: Ember.on('init', function () {
-    this.set('keyboardActivated', true);
-  }),
-  actions: {
-    modalBtnPressed() {
-      "use strict";
-      this.get('experimentOverseer').modalNext();
-    }
-  }
 });

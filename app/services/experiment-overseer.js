@@ -28,6 +28,8 @@ export default Ember.Service.extend({
   modalHeader: 'Hai',
   modalText: "You aren't supposed to see this :frown:",
   modalBtnText: 'Next?',
+  shouldRedirectToThankYou: false,
+  shouldRedirectToPause: false,
   beeper: Ember.inject.service(),
   experimentGateway: Ember.inject.service(),
   isTrainingSession: false,
@@ -74,15 +76,19 @@ export default Ember.Service.extend({
   }),
   handleKeyPress(keyCode) {
     "use strict";
-    if (!this.get('isDisplayingLightset')) {
-      console.info('Button pressed when no combination was shown');
-      return;
-    }
-    if (keyCode in buttonMapper) {
-      let number = buttonMapper[keyCode];
-      this.onCorrectKeyPressed(number);
+    if (keyCode === 'Escape') {
+      this.onPauseKeyPressed();
     } else {
-      this.onIncorrectKeyPressed();
+      if (!this.get('isDisplayingLightset')) {
+        console.info('Button pressed when no combination was shown');
+        return;
+      }
+      if (keyCode in buttonMapper) {
+        let number = buttonMapper[keyCode];
+        this.onCorrectKeyPressed(number);
+      } else {
+        this.onIncorrectKeyPressed();
+      }
     }
   },
   initExperiment(userid, userpass) {
@@ -165,6 +171,10 @@ export default Ember.Service.extend({
     this.set('lightset', 0);
     this.set('userid', null);
     this.set('userpass', null);
+    this.set('shouldRedirectToThankYou', false);
+    this.set('shouldRedirectToPause', false);
+    this.set('isLightoffInProgress', false);
+    this.set('isModalOpen', false);
   },
   isAuthenticated(){
     "use strict";
@@ -249,7 +259,15 @@ export default Ember.Service.extend({
       }
     } else {
       this.reportLightsetShowingFinished()
-        .then(() => Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets))
+        .then((resp) => {
+          if (resp === 'OK') {
+            Ember.run.later(() => this.getNextLightset(), delayBetweenLightsets);
+          } else if (resp === 'FIN') {
+            this.set('shouldRedirectToThankYou', true);
+          } else {
+            console.error('Unknown lightset finish response code: ' + resp);
+          }
+        })
         .catch(this.reportError.bind(this));
     }
   },
@@ -288,5 +306,11 @@ export default Ember.Service.extend({
     if (audioMode === 'beep') {
       this.get('beeper').playBeep();
     }
+  },
+  onPauseKeyPressed() {
+    "use strict";
+    this.pauseCurrentLightset().then(() => {
+      this.set('shouldRedirectToPause', true);
+    }).catch(this.reportError.bind(this));
   }
 });

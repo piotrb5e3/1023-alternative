@@ -1,0 +1,34 @@
+{{#experiment-bg}}
+  <div id="experiment-base">
+    <div class="valign-wrapper">
+      <div class="valign">
+        <table>
+          <tr>
+            {{#each-in lights as |light-no light|}}
+              {{experiment-lamp light=light lightNo=lightNo}}
+            {{/each-in}}
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      {{#if isModalOpen}}
+        {{#md-modal}}
+          <div class="modal-content">
+            <h4>{{modalHeader}}</h4>
+            <p>
+              {{modalText}}
+            </p>
+          </div>
+          <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-green btn-flat agree-button"
+              {{action 'modalBtnPressed'}}>
+              {{modalBtnText}}
+            </a>
+          </div>
+        {{/md-modal}}
+      {{/if}}
+    </div>
+  </div>
+  {{yield}}
+{{/experiment-bg}}
