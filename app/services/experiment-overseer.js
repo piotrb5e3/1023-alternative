@@ -25,9 +25,9 @@ export default Ember.Service.extend({
   userpass: null,
   controller: null,
   isModalOpen: false,
-  modalHeader: 'Hai',
-  modalText: "You aren't supposed to see this :frown:",
-  modalBtnText: 'Next?',
+  modalHeader: '',
+  modalText: '',
+  modalBtnText: '',
   shouldRedirectToThankYou: false,
   shouldRedirectToPause: false,
   beeper: Ember.inject.service(),
@@ -186,18 +186,17 @@ export default Ember.Service.extend({
     return !!this.get('userid');
   },
   modalNext: () => {
-    alert('What happened?');
   },
   trainingStartInfo() {
     "use strict";
     this.set('isModalOpen', true);
     this.set('modalHeader', 'Instructions');
     this.set('modalText', 'Instructions placeholder');
-    this.set('modalBtnText', 'NEXT');
+    this.set('modalBtnText', 'Next');
     this.set('modalNext', () => {
       this.set('modalHeader', 'Training session');
       this.set('modalText', 'When you close this alert, the training session will start.');
-      this.set('modalBtnText', 'CLOSE');
+      this.set('modalBtnText', 'Close');
       this.set('modalNext', () => {
         this.set('isModalOpen', false);
         this.beginTrainingSession();
@@ -212,7 +211,7 @@ export default Ember.Service.extend({
     this.set('modalHeader', 'Experiment');
     this.set('modalText', 'The training session is now finished. ' +
       'Experiment session will start 10 seconds after you close this alert');
-    this.set('modalBtnText', 'NEXT');
+    this.set('modalBtnText', 'Next');
     this.set('modalNext', () => this.beginExperimentSession());
   },
   beginTrainingSession() {
