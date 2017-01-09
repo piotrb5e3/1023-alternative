@@ -61,7 +61,11 @@
         <dd>{{model.repeatscount}}</dd>
         <dt>Training session length (combinations):</dt>
         <dd>{{model.traininglength}}</dd>
-        <dt>Instructions: _edit_</dt>
+        <dt>Instructions:
+          {{#link-to 'manage.experiment.show.edit-instructions' model}}
+            <i>Edit</i>
+          {{/link-to}}
+        </dt>
         <dd>{{model.instructions}}</dd>
       </dl>
     </div>
