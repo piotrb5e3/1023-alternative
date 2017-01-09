@@ -7,6 +7,8 @@ export default DS.Model.extend({
   lightofftimeout: DS.attr('number'),
   audiomode: DS.attr('string'),
   repeatscount: DS.attr('number'),
+  traininglength: DS.attr('number'),
+  instructions: DS.attr('string'),
   sessions: DS.hasMany('experiment-session', {async: 'false'}),
   sessions_count: Ember.computed('sessions.[]', function () {
     return this.get('sessions').toArray().length;
