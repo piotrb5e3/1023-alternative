@@ -9,6 +9,8 @@ export default Ember.Controller.extend(EmberValidations, {
   lightofftimeout: "",
   audiomode: "",
   repeatscount: "",
+  traininglength: "",
+  instructions: "",
   usedNamesObserver: Ember.observer('model', function () {
     "use strict";
     this.get('validations')['name'].exclusion.in = this.get('model').mapBy('name');
@@ -49,7 +51,21 @@ export default Ember.Controller.extend(EmberValidations, {
         greaterThanOrEqualTo: 0,
         allowBlank: true
       }
-    }
+    },
+    'traininglength': {
+      presence: {
+        message: ""
+      },
+      numericality: {
+        greaterThanOrEqualTo: 1,
+        allowBlank: true
+      }
+    },
+    'instructions': {
+      length: {
+        maximum: 10000
+      }
+    },
   },
   errors: {
     name: Ember.A(),
@@ -57,6 +73,7 @@ export default Ember.Controller.extend(EmberValidations, {
     lightofftimeout: Ember.A(),
     audiomode: Ember.A(),
     repeatscount: Ember.A(),
+    traininglength: Ember.A(),
   },
   lightoffOptions: Ember.A([
     {id: 'fixed', name: 'X ms after lamps ale lit up'},
@@ -76,7 +93,9 @@ export default Ember.Controller.extend(EmberValidations, {
             lightoffmode: controller.get('lightoffmode'),
             lightofftimeout: controller.get('lightofftimeout'),
             audiomode: controller.get('audiomode'),
-            repeatscount: controller.get('repeatscount')
+            repeatscount: controller.get('repeatscount'),
+            traininglength: controller.get('traininglength'),
+            instructions: controller.get('instructions'),
           });
         experiment.save()
           .then(function () {
@@ -85,6 +104,8 @@ export default Ember.Controller.extend(EmberValidations, {
             controller.set('lightofftimeout', null);
             controller.set('audiomode', '');
             controller.set('repeatscount', null);
+            controller.set('traininglength', null);
+            controller.set('instructions', '');
             controller.transitionToRoute("manage.experiment.show", experiment);
           })
           .catch(function (error) {

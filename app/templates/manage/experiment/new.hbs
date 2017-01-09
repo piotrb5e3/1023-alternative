@@ -62,6 +62,27 @@
         </div>
 
         <div class="form-row">
+          {{md-input
+            value=traininglength
+            label='Number of combinations to be shown during training session'
+            type='number'
+            min=1
+            validate=true
+            errors=(if traininglength errors.traininglength (if errors.traininglength invisibleErrors null))
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-textarea
+            value=instructions
+            label='Experiment instructions (can be edited later)'
+            required=false
+            validate=true
+            maxlength=10000
+          }}
+        </div>
+
+        <div class="form-row">
           {{md-btn-submit icon='mdi-content-send'
                           iconPosition='right'
                           text='Submit'}}
