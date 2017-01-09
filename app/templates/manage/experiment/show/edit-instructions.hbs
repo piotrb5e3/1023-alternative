@@ -1,0 +1,24 @@
+<div class="col s12">
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
+      <form {{action "formSubmit" on="submit" }}>
+        <div class="form-row">
+          {{md-textarea
+            value=instructions
+            label='Experiment instruction'
+            required=false
+            validate=true
+            maxlength=10000
+          }}
+        </div>
+
+        <div class="form-row">
+          {{md-btn-submit icon='mdi-content-send'
+                          iconPosition='right'
+                          text='Submit'}}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{outlet}}

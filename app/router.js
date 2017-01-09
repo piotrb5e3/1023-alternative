@@ -13,6 +13,7 @@ Router.map(function () {
       this.route('show', {path: '/:experiment_id'}, function () {
         this.route('session', {path: '/session/:session_id'}, function () {
         });
+        this.route('edit-instructions');
       });
     });
   });
