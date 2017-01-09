@@ -3,8 +3,6 @@ import RSVP from 'rsvp';
 
 const delayBetweenLightsets = 1000;
 
-const TRAINING_SESSION_LENGTH = 100;
-
 const INCORRECT_KEY_NUMBER = -1;
 
 const buttonMapper = {
@@ -191,7 +189,7 @@ export default Ember.Service.extend({
     "use strict";
     this.set('isModalOpen', true);
     this.set('modalHeader', 'Instructions');
-    this.set('modalText', 'Instructions placeholder');
+    this.set('modalText', this.get('settings.instructions'));
     this.set('modalBtnText', 'Next');
     this.set('modalNext', () => {
       this.set('modalHeader', 'Training session');
@@ -217,7 +215,7 @@ export default Ember.Service.extend({
   beginTrainingSession() {
     "use strict";
     this.set('isTrainingSession', true);
-    this.set('trainingSessionCounter', TRAINING_SESSION_LENGTH);
+    this.set('trainingSessionCounter', this.get('settings.traininglength'));
     this.getNextLightset();
   },
   beginExperimentSession() {
