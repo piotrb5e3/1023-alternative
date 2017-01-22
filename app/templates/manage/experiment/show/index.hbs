@@ -72,6 +72,19 @@
   </div>
   <div class="card blue-grey lighten-5">
     <div class="card-content">
+      <span class="card-title">Unused credentials:</span>
+      <form action="http://localhost:8000/api/extra/get-unused-creds" method="post">
+        <input type="hidden" name="experiment_id" value="{{model.id}}">
+        <div class="form-row">
+          {{md-btn-submit icon='mdi-content-send'
+                          iconPosition='right'
+                          text='Download'}}
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card blue-grey lighten-5">
+    <div class="card-content">
       <span class="card-title">Add new sessions:</span>
       <form {{action "newSessionsSubmit" on="submit" }}>
         <div class="form-row">
