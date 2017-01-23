@@ -1,7 +1,7 @@
 # 1023 alternatives
 
 Conduct Robert Seibel's 1023-alternative experiment.
-Requires a [backend app](https://github.com/piotrb5e3/1023alternative-backend)
+Requires a [backend app](https://github.com/piotrb5e3/1023alternative-backend).
 
 ## Warning
 At best it's a PoC. Not suitable for deployment, not secured properly, not tested.
@@ -38,3 +38,17 @@ You will need the following things properly installed on your computer.
 
 * `ember build` (development)
 * `ember build --environment production` (production)
+
+## Demo usage
+
+* Visit [http://localhost:4200](http://localhost:4200) for participant login page
+* Visit [http://localhost:4200/manage](http://localhost:4200/manage) for experimenter's panel
+1. Create an experiment
+2. Create sessions
+3. Download list of credentials
+4. Enter credentials on the login page
+5. Complete an experiment session
+6. Go to the experimenter's panel
+7. Navigate to the experiment's sessions list
+8. Download session data as CSV
+  
